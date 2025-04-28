@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VCR Calculator and Pace Table</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Kanit', sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        h1, h2 {
+            color: #333;
+            text-align: center;
+        }
+        .section {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #vcrResult {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #e9ecef;
+            border-radius: 4px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: center;
+        }
+        th {
+            background-color: #f8f9fa;
+            font-weight: bold;
+        }
+        td.type-ext {
+            background-color: #ffb3b3; /* Brighter Red */
+            color: #cc0000; /* Strong Red */
+        }
+        td.type-fcr {
+            background-color: #ffcc80; /* Brighter Orange */
+            color: #ff8c00; /* Strong Orange */
+        }
+        td.type-mcr {
+            background-color: #ffff66; /* Brighter Yellow */
+            color: #b8860b; /* Strong Yellow-Gold */
+        }
+        td.type-scr {
+            background-color: #ffff66; /* Brighter Yellow */
+            color: #b8860b; /* Strong Yellow-Gold */
+        }
+        td.type-arr {
+            background-color: #b3ffb3; /* Brighter Green */
+            color: #008000; /* Strong Green */
+        }
+        .combined-type {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .combined-type span {
+            margin: 0 5px;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-weight: bold;
+            color: white;
+        }
+        .combined-type span.ext {
+            background-color: #ffb3b3;
+            color: #cc0000;
+        }
+        .combined-type span.fcr {
+            background-color: #ffcc80;
+            color: #ff8c00;
+        }
+    </style>
+</head>
+<body>
+    <h1>VCR Calculator and Pace Table</h1>
+
+    <div class="section">
+        <h2>30 Min Time Trial Result</h2>
+        <div class="form-group">
+            <label for="distance">Distance covered in 30 minutes (meters):</label>
+            <input type="number" id="distance" placeholder="Enter distance in meters">
+        </div>
+        <div class="form-group">
+            <label for="paceMinutes">Average Pace (min/km):</label>
+            <input type="number" id="paceMinutes" placeholder="Minutes">
+            <label for="paceSeconds">:</label>
+            <input type="number" id="paceSeconds" placeholder="Seconds" min="0" max="59">
+        </div>
+        <button onclick="calculateVCRAndPace()">Calculate</button>
+        <div id="vcrResult" class="hidden"></div>
+    </div>
+
+    <div class="section">
+        <h2>Pace Table</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Type</th>
+                    <th>%VCR</th>
+                    <th>Pace</th>
+                    <th>Duration</th>
+                </tr>
+            </thead>
+            <tbody id="paceTableBody">
+                <tr>
+                    <td rowspan="2" class="type-ext">EXT</td>
+                    <td>110%</td>
+                    <td id="ext_110_pace"></td>
+                    <td>400 meters</td>
+                </tr>
+                <tr>
+                    <td>105%</td>
+                    <td id="ext_105_pace"></td>
+                    <td>1000 meters</td>
+                </tr>
+                <tr>
+                    <td class="type-fcr">FCR</td>
+                    <td>97%</td>
+                    <td id="fcr_97_pace"></td>
+                    <td>30 minutes</td>
+                </tr>
+                <tr>
+                    <td class="type-mcr">MCR</td>
+                    <td>90%</td>
+                    <td id="mcr_90_pace"></td>
+                    <td>45-60 minutes</td>
+                </tr>
+                <tr>
+                    <td rowspan="2" class="type-scr">SCR</td>
+                    <td>85%</td>
+                    <td id="scr_85_pace_1"></td>
+                    <td>60-90 minutes</td>
+                </tr>
+                <tr>
+                    <td>80%</td>
+                    <td id="scr_80_pace_2"></td>
+                    <td>60-90 minutes</td>
+                </tr>
+                <tr>
+                    <td class="type-arr">ARR</td>
+                    <td>70%</td>
+                    <td id="arr_70_pace"></td>
+                    <td>30 minutes</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="section">
+        <h2>Recommended Training Distance</h2>
+        <div class="form-group">
+            <label for="mileage">Weekly Mileage (km):</label>
+            <input type="number" id="mileage" placeholder="Enter weekly mileage in km" oninput="calculateTrainingDistance()">
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>% Mileage</th>
+                    <th>Type</th>
+                    <th>Distance</th>
+                </tr>
+            </thead>
+            <tbody id="trainingDistanceBody">
+                <tr>
+                    <td>5-10%</td>
+                    <td class="type-ext">EXT / FCR</td>
+                    <td id="mileage_5_10"></td>
+                </tr>
+                <tr>
+                    <td>60%</td>
+                    <td class="type-mcr">MCR / SCR</td>
+                    <td id="mileage_60"></td>
+                </tr>
+                <tr>
+                    <td>20-30%</td>
+                    <td class="type-arr">ARR</td>
+                    <td id="mileage_20_30"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        function calculateVCRAndPace() {
+            const distanceMeters = parseFloat(document.getElementById("distance").value);
+            const paceMinutes = parseInt(document.getElementById("paceMinutes").value) || 0;
+            const paceSeconds = parseInt(document.getElementById("paceSeconds").value) || 0;
+            let vcr;
+
+            if (!isNaN(distanceMeters) && distanceMeters > 0) {
+                const speedMps = distanceMeters / (30 * 60);
+                vcr = (speedMps - 0.2).toFixed(2);
+            } else if (!isNaN(paceMinutes) || !isNaN(paceSeconds)) {
+                const totalPaceSeconds = (paceMinutes * 60) + paceSeconds;
+                if (totalPaceSeconds > 0) {
+                    const speedMps = 1000 / totalPaceSeconds;
+                    vcr = (speedMps - 0.2).toFixed(2);
+                } else {
+                    alert("Please enter either distance or pace.");
+                    return;
+                }
+            } else {
+                alert("Please enter either distance or pace.");
+                return;
+            }
+
+            document.getElementById("vcrResult").innerText = `Your VCR is: ${vcr}`;
+            document.getElementById("vcrResult").classList.remove("hidden");
+            updatePaceTable(vcr);
+        }
+
+        function updatePaceTable(vcr) {
+            const percentages = [1.10, 1.05, 0.97, 0.90, 0.85, 0.80, 0.70];
+            const ids = ["ext_110_pace", "ext_105_pace", "fcr_97_pace", "mcr_90_pace", "scr_85_pace_1", "scr_80_pace_2", "arr_70_pace"];
+
+            for (let i = 0; i < percentages.length; i++) {
+                const targetSpeedMps = vcr * percentages[i];
+                const paceSecondsPerKm = 1000 / targetSpeedMps;
+                const paceMinutes = Math.floor(paceSecondsPerKm / 60);
+                const paceSeconds = Math.round(paceSecondsPerKm % 60);
+                const formattedPace = `${paceMinutes}:${paceSeconds < 10 ? '0' : ''}${paceSeconds}`;
+                document.getElementById(ids[i]).innerText = formattedPace;
+            }
+        }
+
+        function calculateTrainingDistance() {
+            const mileage = parseFloat(document.getElementById("mileage").value);
+            if (!isNaN(mileage) && mileage >= 0) {
+                document.getElementById("mileage_5_10").innerText = `${(mileage * 0.05).toFixed(2)} - ${(mileage * 0.10).toFixed(2)} km`;
+                document.getElementById("mileage_60").innerText = `${(mileage * 0.60).toFixed(2)} km`;
+                document.getElementById("mileage_20_30").innerText = `${(mileage * 0.20).toFixed(2)} - ${(mileage * 0.30).toFixed(2)} km`;
+            } else {
+                document.getElementById("mileage_5_10").innerText = "";
+                document.getElementById("mileage_60").innerText = "";
+                document.getElementById("mileage_20_30").innerText = "";
+            }
+        }
+    </script>
+</body>
+</html>
