@@ -10,20 +10,24 @@
     <style>
         body {
             font-family: 'Kanit', sans-serif;
-            margin: 20px;
+            margin: 0; /* ปรับ margin เริ่มต้น */
+            padding: 0; /* ปรับ padding เริ่มต้น */
             background-color: #f4f4f4;
             color: #333;
+            line-height: 1.6; /* เพิ่ม line-height ให้อ่านง่าย */
         }
         h1, h2 {
             color: #333;
             text-align: center;
+            margin-top: 20px; /* เพิ่ม margin บน */
+            margin-bottom: 20px; /* เพิ่ม margin ล่าง */
         }
         .section {
             background-color: #fff;
-            padding: 20px;
+            padding: 15px; /* ลด padding เล็กน้อย */
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            margin-bottom: 20px;
+            margin: 15px; /* ปรับ margin รอบ section */
         }
         .form-group {
             margin-bottom: 15px;
@@ -34,20 +38,23 @@
             font-weight: bold;
         }
         input[type="number"] {
-            width: 100%;
+            width: calc(100% - 20px); /* ปรับความกว้างและลด padding */
             padding: 10px;
             border: 1px solid #ccc;
             border-radius: 4px;
             box-sizing: border-box;
+            font-size: 16px; /* เพิ่มขนาด font */
         }
         button {
             background-color: #007bff;
             color: white;
-            padding: 10px 15px;
+            padding: 12px 20px; /* ปรับ padding ปุ่ม */
             border: none;
             border-radius: 4px;
             cursor: pointer;
-            font-size: 16px;
+            font-size: 18px; /* เพิ่มขนาด font ปุ่ม */
+            width: 100%; /* ให้ปุ่มกว้างเต็มจอ */
+            box-sizing: border-box;
         }
         button:hover {
             background-color: #0056b3;
@@ -68,48 +75,52 @@
             background-color: #fff;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             border-radius: 8px;
-            overflow: hidden;
+            overflow-x: auto; /* เพิ่ม scrollbar ในแนวนอนถ้าตารางใหญ่เกินไป */
         }
         th, td {
             border: 1px solid #ddd;
-            padding: 12px;
+            padding: 10px; /* ลด padding ในตารางเล็กน้อย */
             text-align: center;
+            font-size: 14px; /* ปรับขนาด font ในตาราง */
+            white-space: nowrap; /* ป้องกันข้อความในตารางขึ้นบรรทัดใหม่ */
         }
         th {
             background-color: #f8f9fa;
             font-weight: bold;
         }
         td.type-ext {
-            background-color: #ffb3b3; /* Brighter Red */
-            color: #cc0000; /* Strong Red */
+            background-color: #ffb3b3;
+            color: #cc0000;
         }
         td.type-fcr {
-            background-color: #ffcc80; /* Brighter Orange */
-            color: #ff8c00; /* Strong Orange */
+            background-color: #ffcc80;
+            color: #ff8c00;
         }
         td.type-mcr {
-            background-color: #ffff66; /* Brighter Yellow */
-            color: #b8860b; /* Strong Yellow-Gold */
+            background-color: #ffff66;
+            color: #b8860b;
         }
         td.type-scr {
-            background-color: #ffff66; /* Brighter Yellow */
-            color: #b8860b; /* Strong Yellow-Gold */
+            background-color: #ffff66;
+            color: #b8860b;
         }
         td.type-arr {
-            background-color: #b3ffb3; /* Brighter Green */
-            color: #008000; /* Strong Green */
+            background-color: #b3ffb3;
+            color: #008000;
         }
         .combined-type {
             display: flex;
             justify-content: center;
             align-items: center;
+            flex-direction: column; /* จัดเรียงในแนวตั้งสำหรับมือถือ */
         }
         .combined-type span {
-            margin: 0 5px;
-            padding: 5px 10px;
+            margin: 5px 0; /* เพิ่ม margin เล็กน้อย */
+            padding: 8px 12px; /* ปรับ padding */
             border-radius: 4px;
             font-weight: bold;
             color: white;
+            font-size: 14px; /* ปรับขนาด font */
         }
         .combined-type span.ext {
             background-color: #ffb3b3;
@@ -119,6 +130,24 @@
             background-color: #ffcc80;
             color: #ff8c00;
         }
+
+        /* Media Query สำหรับหน้าจอขนาดเล็ก (มือถือ) */
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 24px; /* ลดขนาด font heading */
+            }
+            h2 {
+                font-size: 20px; /* ลดขนาด font subheading */
+            }
+            .section {
+                margin: 10px; /* ลด margin section */
+                padding: 10px; /* ลด padding section */
+            }
+            th, td {
+                padding: 8px; /* ลด padding ในตารางอีก */
+                font-size: 12px; /* ลดขนาด font ในตารางอีก */
+            }
+        }
     </style>
 </head>
 <body>
@@ -127,11 +156,11 @@
     <div class="section">
         <h2>30 Min Time Trial Result</h2>
         <div class="form-group">
-            <label for="distance">Distance covered in 30 minutes (meters):</label>
-            <input type="number" id="distance" placeholder="Enter distance in meters">
+            <label for="distance">Distance (meters):</label>
+            <input type="number" id="distance" placeholder="Enter distance">
         </div>
         <div class="form-group">
-            <label for="paceMinutes">Average Pace (min/km):</label>
+            <label for="paceMinutes">Pace (min/km):</label>
             <input type="number" id="paceMinutes" placeholder="Minutes">
             <label for="paceSeconds">:</label>
             <input type="number" id="paceSeconds" placeholder="Seconds" min="0" max="59">
@@ -156,41 +185,41 @@
                     <td rowspan="2" class="type-ext">EXT</td>
                     <td>110%</td>
                     <td id="ext_110_pace"></td>
-                    <td>400 meters</td>
+                    <td>400m</td>
                 </tr>
                 <tr>
                     <td>105%</td>
                     <td id="ext_105_pace"></td>
-                    <td>1000 meters</td>
+                    <td>1000m</td>
                 </tr>
                 <tr>
                     <td class="type-fcr">FCR</td>
                     <td>97%</td>
                     <td id="fcr_97_pace"></td>
-                    <td>30 minutes</td>
+                    <td>30min</td>
                 </tr>
                 <tr>
                     <td class="type-mcr">MCR</td>
                     <td>90%</td>
                     <td id="mcr_90_pace"></td>
-                    <td>45-60 minutes</td>
+                    <td>45-60min</td>
                 </tr>
                 <tr>
                     <td rowspan="2" class="type-scr">SCR</td>
                     <td>85%</td>
                     <td id="scr_85_pace_1"></td>
-                    <td>60-90 minutes</td>
+                    <td>60-90min</td>
                 </tr>
                 <tr>
                     <td>80%</td>
                     <td id="scr_80_pace_2"></td>
-                    <td>60-90 minutes</td>
+                    <td>60-90min</td>
                 </tr>
                 <tr>
                     <td class="type-arr">ARR</td>
                     <td>70%</td>
                     <td id="arr_70_pace"></td>
-                    <td>30 minutes</td>
+                    <td>30min</td>
                 </tr>
             </tbody>
         </table>
@@ -200,7 +229,7 @@
         <h2>Recommended Training Distance</h2>
         <div class="form-group">
             <label for="mileage">Weekly Mileage (km):</label>
-            <input type="number" id="mileage" placeholder="Enter weekly mileage in km" oninput="calculateTrainingDistance()">
+            <input type="number" id="mileage" placeholder="Enter mileage" oninput="calculateTrainingDistance()">
         </div>
         <table>
             <thead>
@@ -213,7 +242,12 @@
             <tbody id="trainingDistanceBody">
                 <tr>
                     <td>5-10%</td>
-                    <td class="type-ext">EXT / FCR</td>
+                    <td class="type-ext">
+                        <div class="combined-type">
+                            <span class="ext">EXT</span>
+                            <span class="fcr">FCR</span>
+                        </div>
+                    </td>
                     <td id="mileage_5_10"></td>
                 </tr>
                 <tr>
