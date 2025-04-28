@@ -254,6 +254,49 @@
         </table>
     </div>
 
+    <div class="section">
+        <h2>Heart Rate Zones</h2>
+        <div class="form-group">
+            <label for="ageHR">Age:</label>
+            <input type="number" id="ageHR" placeholder="Enter your age">
+        </div>
+        <div class="form-group">
+            <label for="maxHR">Max Heart Rate:</label>
+            <input type="number" id="maxHR" placeholder="Enter your Max HR (optional)">
+        </div>
+        <div class="form-group">
+            <label for="rhr">Resting Heart Rate (RHR):</label>
+            <input type="number" id="rhr" placeholder="Enter your RHR">
+        </div>
+        <button onclick="calculateHRZones()">Calculate HR Zones</button>
+        <table>
+            <thead>
+                <tr>
+                    <th>Zone</th>
+                    <th>Percentage</th>
+                    <th>Heart Rate</th>
+                </tr>
+            </thead>
+            <tbody id="hrZonesBody">
+                <tr>
+                    <td>Recovery</td>
+                    <td id="hr_zone_1_percent">below 60%</td>
+                    <td id="hr_zone_1"></td>
+                </tr>
+                <tr>
+                    <td>Aerobic</td>
+                    <td>60-80%</td>
+                    <td id="hr_zone_2"></td>
+                </tr>
+                <tr>
+                    <td>Anaerobic</td>
+                    <td id="hr_zone_3_percent">above 80%</td>
+                    <td id="hr_zone_3"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
     <script>
         function calculateVCRAndPace() {
             const distanceMeters = parseFloat(document.getElementById("distance").value);
@@ -308,6 +351,37 @@
                 document.getElementById("mileage_60").innerText = "";
                 document.getElementById("mileage_20_30").innerText = "";
             }
+        }
+
+        function calculateHRZones() {
+            const age = parseInt(document.getElementById("ageHR").value);
+            const maxHRInput = parseInt(document.getElementById("maxHR").value);
+            const rhr = parseInt(document.getElementById("rhr").value);
+            let hrReserve;
+            let maxHR;
+
+            if (!isNaN(maxHRInput) && maxHRInput > 0) {
+                maxHR = maxHRInput;
+                hrReserve = maxHR - rhr;
+            } else if (!isNaN(age) && age > 0 && !isNaN(rhr)) {
+                maxHR = 220 - age;
+                hrReserve = maxHR - rhr;
+            } else {
+                alert("Please enter either your age and resting heart rate, or your max heart rate and resting heart rate.");
+                document.getElementById("hr_zone_1").innerText = "";
+                document.getElementById("hr_zone_2").innerText = "";
+                document.getElementById("hr_zone_3").innerText = "";
+                return;
+            }
+
+            const zone2_lower_percent = 0.60;
+            const zone2_upper_percent = 0.80;
+            const zone2_hr_lower = Math.ceil((hrReserve * zone2_lower_percent) + rhr);
+            const zone2_hr_upper = Math.floor((hrReserve * zone2_upper_percent) + rhr);
+
+            document.getElementById("hr_zone_1").innerText = `Below ${zone2_hr_lower}`;
+            document.getElementById("hr_zone_2").innerText = `${zone2_hr_lower} - ${zone2_hr_upper}`;
+            document.getElementById("hr_zone_3").innerText = `Above ${zone2_hr_upper}`;
         }
     </script>
 </body>
