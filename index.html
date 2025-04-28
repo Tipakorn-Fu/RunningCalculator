@@ -10,24 +10,24 @@
     <style>
         body {
             font-family: 'Kanit', sans-serif;
-            margin: 0; /* ปรับ margin เริ่มต้น */
-            padding: 0; /* ปรับ padding เริ่มต้น */
+            margin: 0;
+            padding: 0;
             background-color: #f4f4f4;
             color: #333;
-            line-height: 1.6; /* เพิ่ม line-height ให้อ่านง่าย */
+            line-height: 1.6;
         }
         h1, h2 {
             color: #333;
             text-align: center;
-            margin-top: 20px; /* เพิ่ม margin บน */
-            margin-bottom: 20px; /* เพิ่ม margin ล่าง */
+            margin-top: 20px;
+            margin-bottom: 20px;
         }
         .section {
             background-color: #fff;
-            padding: 15px; /* ลด padding เล็กน้อย */
+            padding: 15px;
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            margin: 15px; /* ปรับ margin รอบ section */
+            margin: 15px;
         }
         .form-group {
             margin-bottom: 15px;
@@ -38,22 +38,22 @@
             font-weight: bold;
         }
         input[type="number"] {
-            width: calc(100% - 20px); /* ปรับความกว้างและลด padding */
+            width: calc(100% - 20px);
             padding: 10px;
             border: 1px solid #ccc;
             border-radius: 4px;
             box-sizing: border-box;
-            font-size: 16px; /* เพิ่มขนาด font */
+            font-size: 16px;
         }
         button {
             background-color: #007bff;
             color: white;
-            padding: 12px 20px; /* ปรับ padding ปุ่ม */
+            padding: 12px 20px;
             border: none;
             border-radius: 4px;
             cursor: pointer;
-            font-size: 18px; /* เพิ่มขนาด font ปุ่ม */
-            width: 100%; /* ให้ปุ่มกว้างเต็มจอ */
+            font-size: 18px;
+            width: 100%;
             box-sizing: border-box;
         }
         button:hover {
@@ -75,14 +75,14 @@
             background-color: #fff;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             border-radius: 8px;
-            overflow-x: auto; /* เพิ่ม scrollbar ในแนวนอนถ้าตารางใหญ่เกินไป */
+            overflow-x: auto;
         }
         th, td {
             border: 1px solid #ddd;
-            padding: 10px; /* ลด padding ในตารางเล็กน้อย */
+            padding: 10px;
             text-align: center;
-            font-size: 14px; /* ปรับขนาด font ในตาราง */
-            white-space: nowrap; /* ป้องกันข้อความในตารางขึ้นบรรทัดใหม่ */
+            font-size: 14px;
+            white-space: nowrap;
         }
         th {
             background-color: #f8f9fa;
@@ -96,11 +96,7 @@
             background-color: #ffcc80;
             color: #ff8c00;
         }
-        td.type-mcr {
-            background-color: #ffff66;
-            color: #b8860b;
-        }
-        td.type-scr {
+        td.type-mcr-scr {
             background-color: #ffff66;
             color: #b8860b;
         }
@@ -112,15 +108,15 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            flex-direction: column; /* จัดเรียงในแนวตั้งสำหรับมือถือ */
+            flex-direction: column;
         }
         .combined-type span {
-            margin: 5px 0; /* เพิ่ม margin เล็กน้อย */
-            padding: 8px 12px; /* ปรับ padding */
+            margin: 5px 0;
+            padding: 8px 12px;
             border-radius: 4px;
             font-weight: bold;
             color: white;
-            font-size: 14px; /* ปรับขนาด font */
+            font-size: 14px;
         }
         .combined-type span.ext {
             background-color: #ffb3b3;
@@ -134,18 +130,18 @@
         /* Media Query สำหรับหน้าจอขนาดเล็ก (มือถือ) */
         @media (max-width: 600px) {
             h1 {
-                font-size: 24px; /* ลดขนาด font heading */
+                font-size: 24px;
             }
             h2 {
-                font-size: 20px; /* ลดขนาด font subheading */
+                font-size: 20px;
             }
             .section {
-                margin: 10px; /* ลด margin section */
-                padding: 10px; /* ลด padding section */
+                margin: 10px;
+                padding: 10px;
             }
             th, td {
-                padding: 8px; /* ลด padding ในตารางอีก */
-                font-size: 12px; /* ลดขนาด font ในตารางอีก */
+                padding: 8px;
+                font-size: 12px;
             }
         }
     </style>
@@ -199,13 +195,13 @@
                     <td>30min</td>
                 </tr>
                 <tr>
-                    <td class="type-mcr">MCR</td>
+                    <td class="type-mcr-scr">MCR</td>
                     <td>90%</td>
                     <td id="mcr_90_pace"></td>
                     <td>45-60min</td>
                 </tr>
                 <tr>
-                    <td rowspan="2" class="type-scr">SCR</td>
+                    <td rowspan="2" class="type-mcr-scr">SCR</td>
                     <td>85%</td>
                     <td id="scr_85_pace_1"></td>
                     <td>60-90min</td>
@@ -242,17 +238,12 @@
             <tbody id="trainingDistanceBody">
                 <tr>
                     <td>5-10%</td>
-                    <td class="type-ext">
-                        <div class="combined-type">
-                            <span class="ext">EXT</span>
-                            <span class="fcr">FCR</span>
-                        </div>
-                    </td>
+                    <td class="type-ext">EXT / FCR</td>
                     <td id="mileage_5_10"></td>
                 </tr>
                 <tr>
                     <td>60%</td>
-                    <td class="type-mcr">MCR / SCR</td>
+                    <td class="type-mcr-scr">MCR / SCR</td>
                     <td id="mileage_60"></td>
                 </tr>
                 <tr>
