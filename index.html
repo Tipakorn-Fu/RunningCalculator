@@ -37,7 +37,7 @@
             margin-bottom: 5px;
             font-weight: bold;
         }
-        input[type="number"] {
+        input {
             width: calc(100% - 20px);
             padding: 10px;
             border: 1px solid #ccc;
@@ -394,19 +394,11 @@
             const minutes = Math.floor((totalSeconds % 3600) / 60);
             const seconds = Math.round(totalSeconds % 60);
 
-            let parts = [];
             if (hours > 0) {
-                parts.push(hours + "h");
+                return `${hours}:${minutes < 10 ? '0' : ''}${minutes} hr`;
+            } else {
+                return `${minutes}:${seconds < 10 ? '0' : ''}${seconds} min`;
             }
-            if (minutes > 0 || (hours > 0) || (seconds > 0 && hours === 0 && minutes === 0)) {
-                 parts.push(`${(hours > 0 && minutes < 10) ? '0' : ''}${minutes}m`);
-            } else if (hours === 0 && minutes === 0 && seconds === 0) {
-                parts.push('0m');
-            }
-
-            parts.push(`${seconds < 10 ? '0' : ''}${seconds}s`);
-            
-            return parts.filter(Boolean).join(' ');
         }
 
 
@@ -415,7 +407,7 @@
             const paceMinutes = parseInt(document.getElementById("paceMinutes").value);
             const paceSeconds = parseInt(document.getElementById("paceSeconds").value);
 
-            let speedMps_from_input; 
+            let speedMps_from_input;
             let vcr;
 
             if (!isNaN(distanceMeters) && distanceMeters > 0) {
@@ -429,7 +421,7 @@
                     document.getElementById("vcrPaceValue").innerText = "";
                     document.getElementById("vcrResult").style.display = 'none';
                     alert("Please enter a valid pace (minutes and/or seconds) greater than zero.");
-                    resetRacePaceChart(); 
+                    resetRacePaceChart();
                     return;
                 }
             } else {
@@ -437,17 +429,17 @@
                 document.getElementById("vcrPaceValue").innerText = "";
                 document.getElementById("vcrResult").style.display = 'none';
                 alert("Please enter either distance or pace for the 30-minute time trial.");
-                resetRacePaceChart(); 
+                resetRacePaceChart();
                 return;
             }
 
             vcr = (speedMps_from_input - VCR_SPEED_OFFSET).toFixed(2);
 
-            let vcrPaceSecondsPerKm = "N/A"; 
-            if (parseFloat(vcr) > 0) { 
+            let vcrPaceSecondsPerKm = "N/A";
+            if (parseFloat(vcr) > 0) {
                 vcrPaceSecondsPerKm = METERS_PER_KM / parseFloat(vcr);
             }
-            
+
             const formattedVcrPace = formatPace(vcrPaceSecondsPerKm);
 
             document.getElementById("vcrValue").innerText = `Your VCR is: ${vcr} m/s`;
@@ -465,11 +457,11 @@
             for (let i = 0; i < percentages.length; i++) {
                 const vcrNum = parseFloat(vcr);
                 if (!isNaN(vcrNum) && vcrNum > 0) {
-                    const targetSpeedMps = vcrNum * percentages[i];
+                    const targetSpeedMps = vcrNum * percentages [i];
                     const paceSecondsPerKm = METERS_PER_KM / targetSpeedMps;
-                    document.getElementById(ids[i]).innerText = formatPace(paceSecondsPerKm);
+                    document.getElementById(ids [i]).innerText = formatPace(paceSecondsPerKm);
                 } else {
-                    document.getElementById(ids[i]).innerText = "N/A";
+                    document.getElementById(ids [i]).innerText = "N/A";
                 }
             }
         }
@@ -516,17 +508,15 @@
             const paceMarathonLowerSecondsPerKm = METERS_PER_KM / speedMarathonUpperMps;
             const paceMarathonUpperSecondsPerKm = METERS_PER_KM / speedMarathonLowerMps;
             const totalTimeMarathonLowerSeconds = paceMarathonUpperSecondsPerKm * DISTANCE_MARATHON;
-            const totalTimeMarathonUpperSeconds = paceMarathonLowerSecondsPerKm * DISTANCE_MARATHON;
+            const totalTimeMarathonUpperSeconds = paceHalfMarathonLowerSecondsPerKm * DISTANCE_MARATHON; // Corrected this line
 
             document.getElementById("est_marathon_pace").innerText = `${formatPace(paceMarathonUpperSecondsPerKm)} - ${formatPace(paceMarathonLowerSecondsPerKm)}`;
             document.getElementById("est_marathon_time").innerText = `${formatTime(totalTimeMarathonUpperSeconds)} - ${formatTime(totalTimeMarathonLowerSeconds)}`;
         }
 
         function resetRacePaceChartContent() {
-            // Added 5K to reset
             document.getElementById("est_5k_pace").innerText = "";
             document.getElementById("est_5k_time").innerText = "";
-
             document.getElementById("est_10k_pace").innerText = "";
             document.getElementById("est_10k_time").innerText = "";
             document.getElementById("est_half_marathon_pace").innerText = "";
@@ -558,7 +548,7 @@
             const age = parseInt(document.getElementById("ageHR").value);
             const maxHRInput = parseInt(document.getElementById("maxHR").value);
             const rhr = parseInt(document.getElementById("rhr").value);
-            
+
             let maxHR;
 
             if (isNaN(rhr) || rhr <= 0) {
@@ -576,7 +566,7 @@
                 resetHRZones();
                 return;
             }
-            
+
             if (maxHR <= rhr) {
                 alert("Max Heart Rate must be greater than Resting Heart Rate.");
                 resetHRZones();
