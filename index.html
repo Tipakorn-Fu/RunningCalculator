@@ -6,78 +6,162 @@
     <title>VCR Calculator and Pace Table</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        body {
-            font-family: 'Kanit', sans-serif;
+        * {
             margin: 0;
             padding: 0;
-            background-color: #f4f4f4;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: #333;
             line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px 0;
         }
-        h1, h2 {
-            color: #333;
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        h1 {
             text-align: center;
-            margin-top: 20px;
+            color: white;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 30px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        h2 {
+            color: #2d3748;
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+
+        .form-group {
             margin-bottom: 20px;
         }
-        .section {
-            background-color: #fff;
-            padding: 15px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            margin: 15px;
+
+        .form-row {
+            display: flex;
+            gap: 15px;
+            align-items: end;
         }
-        .form-group {
-            margin-bottom: 15px;
+
+        .form-row .form-group {
+            flex: 1;
         }
+
+        .form-row .form-group:last-child {
+            flex: 0.5;
+        }
+
         label {
             display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #4a5568;
+            font-size: 0.9rem;
         }
+
         input {
-            width: calc(100% - 20px);
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            box-sizing: border-box;
-            font-size: 16px;
-        }
-        button {
-            background-color: #007bff;
-            color: white;
-            padding: 12px 20px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 18px;
             width: 100%;
-            box-sizing: border-box;
+            padding: 12px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: #fafafa;
         }
+
+        input:focus {
+            outline: none;
+            border-color: #667eea;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 14px 28px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            width: 100%;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
         button:hover {
-            background-color: #0056b3;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
         }
-        /* Adjusted display for vcrResult to accommodate both VCR and Pace */
+
+        button:active {
+            transform: translateY(0);
+        }
+
         #vcrResult {
-            margin-top: 20px;
-            padding: 15px;
-            background-color: #e9ecef;
-            border-radius: 4px;
+            margin-top: 25px;
+            padding: 20px;
+            background: linear-gradient(135deg, #e6fffa 0%, #f0fff4 100%);
+            border-radius: 12px;
             text-align: center;
             font-size: 18px;
-            font-weight: bold;
-            /* Added flexbox for horizontal alignment */
+            font-weight: 600;
+            color: #2d3748;
+            border: 2px solid #38a169;
             display: flex;
-            flex-direction: column; /* Default for smaller screens */
+            flex-direction: column;
             align-items: center;
-            gap: 10px; /* Space between items */
+            gap: 10px;
+            animation: slideIn 0.5s ease-out;
         }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
         #vcrResult span {
-            display: block; /* Ensure each part is on its own line by default */
+            display: block;
         }
-        /* For larger screens, display results horizontally */
+
         @media (min-width: 601px) {
             #vcrResult {
                 flex-direction: row;
@@ -89,280 +173,408 @@
             width: 100%;
             border-collapse: collapse;
             margin-top: 20px;
-            background-color: #fff;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            border-radius: 8px;
-            overflow-x: auto; /* Key for table responsiveness */
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
+
         th, td {
-            border: 1px solid #ddd;
-            padding: 10px;
+            padding: 12px 16px;
             text-align: center;
             font-size: 14px;
-            white-space: nowrap; /* Prevents text from wrapping in table cells */
+            border-bottom: 1px solid #e2e8f0;
         }
+
         th {
-            background-color: #f8f9fa;
-            font-weight: bold;
-        }
-        td.type-ext {
-            background-color: #ffb3b3;
-            color: #cc0000;
-        }
-        td.type-fcr {
-            background-color: #ffcc80;
-            color: #ff8c00;
-        }
-        td.type-mcr-scr {
-            background-color: #ffff66;
-            color: #b8860b;
-        }
-        td.type-arr {
-            background-color: #b3ffb3;
-            color: #008000;
-        }
-        .combined-type {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-        }
-        .combined-type span {
-            margin: 5px 0;
-            padding: 8px 12px;
-            border-radius: 4px;
-            font-weight: bold;
-            color: white;
-            font-size: 14px;
-        }
-        .combined-type span.ext {
-            background-color: #ffb3b3;
-            color: #cc0000;
-        }
-        .combined-type span.fcr {
-            background-color: #ffcc80;
-            color: #ff8c00;
+            background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+            font-weight: 600;
+            color: #2d3748;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-size: 12px;
         }
 
-        /* Media Query สำหรับหน้าจอขนาดเล็ก (มือถือ) */
-        @media (max-width: 600px) {
-            h1 {
-                font-size: 24px;
-            }
-            h2 {
-                font-size: 20px;
-            }
-            .section {
-                margin: 10px;
-                padding: 10px;
-            }
-            th, td {
-                padding: 8px;
-                font-size: 12px;
-            }
+        td {
+            font-weight: 500;
         }
 
-        /* Styles for Estimated Pace Chart to distinguish from training paces */
+        tr:hover {
+            background: #f8fafc;
+            transition: background 0.3s ease;
+        }
+
+        /* Training type colors with better contrast */
+        .type-ext {
+            background: linear-gradient(135deg, #fed7d7 0%, #fbb6ce 100%);
+            color: #c53030;
+            font-weight: 600;
+        }
+
+        .type-fcr {
+            background: linear-gradient(135deg, #feebc8 0%, #fbd38d 100%);
+            color: #dd6b20;
+            font-weight: 600;
+        }
+
+        .type-mcr-scr {
+            background: linear-gradient(135deg, #fefcbf 0%, #faf089 100%);
+            color: #b7791f;
+            font-weight: 600;
+        }
+
+        .type-arr {
+            background: linear-gradient(135deg, #c6f6d5 0%, #9ae6b4 100%);
+            color: #276749;
+            font-weight: 600;
+        }
+
         .estimated-pace-table th {
-            background-color: #d1ecf1; /* Light blue for estimated paces */
-            color: #0c5460;
+            background: linear-gradient(135deg, #e6fffa 0%, #bee3f8 100%);
+            color: #2c5282;
         }
+
         .estimated-pace-table td {
-             background-color: #e2f2f5;
+            background: linear-gradient(135deg, #f0fff4 0%, #e6fffa 100%);
         }
+
+        /* Heart Rate Zones */
+        .hr-zone-recovery {
+            background: linear-gradient(135deg, #c6f6d5 0%, #9ae6b4 100%);
+            color: #276749;
+        }
+
+        .hr-zone-aerobic {
+            background: linear-gradient(135deg, #feebc8 0%, #fbd38d 100%);
+            color: #dd6b20;
+        }
+
+        .hr-zone-anaerobic {
+            background: linear-gradient(135deg, #fed7d7 0%, #fbb6ce 100%);
+            color: #c53030;
+        }
+
+        /* Icons */
+        .icon {
+            font-size: 1.2rem;
+            margin-right: 5px;
+        }
+
+        /* Loading animation */
+        .calculating {
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        .calculating button {
+            background: #a0aec0;
+            cursor: not-allowed;
+        }
+
+        /* Tooltip styles */
+        .tooltip {
+            position: relative;
+            display: inline-block;
+        }
+
+        .tooltip:hover::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #2d3748;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            white-space: nowrap;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+
+        /* Pulse animation for results */
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        /* --- RESPONSIVE DESIGN --- */
+        
+        /* For tablets and smaller devices */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px 0;
+            }
+
+            .container {
+                padding: 0 15px;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+                margin-bottom: 20px;
+            }
+
+            h2 {
+                font-size: 1.3rem;
+            }
+            
+            .section {
+                padding: 20px;
+                margin-bottom: 20px;
+            }
+            
+            .form-row {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 15px;
+            }
+            
+            .form-row .form-group {
+                margin-bottom: 0;
+            }
+
+            label {
+                font-size: 0.85rem;
+            }
+
+            input, button {
+                font-size: 1rem;
+                padding: 12px 14px;
+            }
+            
+            th, td {
+                padding: 10px 8px;
+            }
+
+            #vcrResult {
+                flex-direction: column;
+                font-size: 1rem;
+                padding: 15px;
+                gap: 8px;
+            }
+        }
+
+        /* For very small screens to ensure tables are scrollable */
+        @media (max-width: 600px) {
+            table {
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+        }
+
     </style>
 </head>
 <body>
-    <h1>VCR Calculator and Pace Table</h1>
+    <div class="container">
+        <h1>🏃‍♂️ VCR Calculator & Training Pace Guide</h1>
 
-    <div class="section">
-        <h2>30 Min Time Trial Result</h2>
-        <div class="form-group">
-            <label for="distance">Distance (meters):</label>
-            <input type="number" id="distance" placeholder="Enter distance" min="0">
+        <div class="section">
+            <h2><span class="icon">⏱️</span>30 Min Time Trial Result</h2>
+            <div class="form-group">
+                <label for="distance">Distance (meters):</label>
+                <input type="number" id="distance" placeholder="Enter distance covered in 30 minutes" min="0">
+            </div>
+            <div class="form-group">
+                <label>OR enter your average pace:</label>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="paceMinutes">Minutes per km:</label>
+                        <input type="number" id="paceMinutes" placeholder="Minutes" min="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="paceSeconds">Seconds:</label>
+                        <input type="number" id="paceSeconds" placeholder="Seconds" min="0" max="59">
+                    </div>
+                </div>
+            </div>
+            <button onclick="calculateVCRAndPace()">🚀 Calculate VCR & Training Paces</button>
+            <div id="vcrResult" style="display: none;" aria-live="polite">
+                <span id="vcrValue"></span>
+                <span id="vcrPaceValue"></span>
+            </div>
         </div>
-        <div class="form-group">
-            <label for="paceMinutes">Pace (min/km):</label>
-            <input type="number" id="paceMinutes" placeholder="Minutes" min="0">
-            <label for="paceSeconds">:</label>
-            <input type="number" id="paceSeconds" placeholder="Seconds" min="0" max="59">
-        </div>
-        <button onclick="calculateVCRAndPace()">Calculate</button>
-        <div id="vcrResult" style="display: none;" aria-live="polite">
-            <span id="vcrValue"></span>
-            <span id="vcrPaceValue"></span>
-        </div>
-    </div>
 
-    <div class="section" id="estimatePaceChartSection" style="display: none;">
-        <h2>Estimated Race Pace Chart</h2>
-        <table class="estimated-pace-table">
-            <thead>
-                <tr>
-                    <th>Distance</th>
-                    <th>%VCR</th>
-                    <th>Pace</th>
-                    <th>Estimated Time</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>5k</td> <td>110%</td>
-                    <td id="est_5k_pace"></td>
-                    <td id="est_5k_time"></td>
-                </tr>
-                <tr>
-                    <td>10k</td>
-                    <td>105%</td>
-                    <td id="est_10k_pace"></td>
-                    <td id="est_10k_time"></td>
-                </tr>
-                <tr>
-                    <td>21.1k</td>
-                    <td>95-97%</td>
-                    <td id="est_half_marathon_pace"></td>
-                    <td id="est_half_marathon_time"></td>
-                </tr>
-                <tr>
-                    <td>42.2k</td>
-                    <td>85-90%</td>
-                    <td id="est_marathon_pace"></td>
-                    <td id="est_marathon_time"></td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+        <div class="section" id="estimatePaceChartSection" style="display: none;">
+            <h2><span class="icon">🏆</span>Estimated Race Pace Chart</h2>
+            <table class="estimated-pace-table">
+                <thead>
+                    <tr>
+                        <th>🏃‍♂️ Distance</th>
+                        <th>� %VCR</th>
+                        <th>⏱️ Pace</th>
+                        <th>🎯 Estimated Time (H:M:S)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>5K</strong></td>
+                        <td>110%</td>
+                        <td id="est_5k_pace"></td>
+                        <td id="est_5k_time"></td>
+                    </tr>
+                    <tr>
+                        <td><strong>10K</strong></td>
+                        <td>105%</td>
+                        <td id="est_10k_pace"></td>
+                        <td id="est_10k_time"></td>
+                    </tr>
+                    <tr>
+                        <td><strong>21.1K</strong></td>
+                        <td>95-97%</td>
+                        <td id="est_half_marathon_pace"></td>
+                        <td id="est_half_marathon_time"></td>
+                    </tr>
+                    <tr>
+                        <td><strong>42.2K</strong></td>
+                        <td>85-90%</td>
+                        <td id="est_marathon_pace"></td>
+                        <td id="est_marathon_time"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
 
-    <div class="section">
-        <h2>Pace Table</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Type</th>
-                    <th>%VCR</th>
-                    <th>Pace</th>
-                    <th>Duration</th>
-                </tr>
-            </thead>
-            <tbody id="paceTableBody">
-                <tr>
-                    <td rowspan="2" class="type-ext">EXT</td>
-                    <td>110%</td>
-                    <td id="ext_110_pace"></td>
-                    <td>400m</td>
-                </tr>
-                <tr>
-                    <td>105%</td>
-                    <td id="ext_105_pace"></td>
-                    <td>1000m</td>
-                </tr>
-                <tr>
-                    <td class="type-fcr">FCR</td>
-                    <td>97%</td>
-                    <td id="fcr_97_pace"></td>
-                    <td>30min</td>
-                </tr>
-                <tr>
-                    <td class="type-mcr-scr">MCR</td>
-                    <td>90%</td>
-                    <td id="mcr_90_pace"></td>
-                    <td>45-60min</td>
-                </tr>
-                <tr>
-                    <td rowspan="2" class="type-mcr-scr">SCR</td>
-                    <td>85%</td>
-                    <td id="scr_85_pace_1"></td>
-                    <td rowspan="2">60-90min</td>
-                </tr>
-                <tr>
-                    <td>80%</td>
-                    <td id="scr_80_pace_2"></td>
-                </tr>
-                <tr>
-                    <td class="type-arr">ARR</td>
-                    <td>70%</td>
-                    <td id="arr_70_pace"></td>
-                    <td>30min</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+        <div class="section">
+            <h2><span class="icon">🎯</span>Training Pace Table</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>🏃‍♂️ Training Type</th>
+                        <th>💪 %VCR</th>
+                        <th>⏱️ Pace</th>
+                        <th>⏳ Duration</th>
+                    </tr>
+                </thead>
+                <tbody id="paceTableBody">
+                    <tr>
+                        <td rowspan="2" class="type-ext">EXT</td>
+                        <td>110%</td>
+                        <td id="ext_110_pace"></td>
+                        <td>400m intervals</td>
+                    </tr>
+                    <tr>
+                        <td>105%</td>
+                        <td id="ext_105_pace"></td>
+                        <td>1000m intervals</td>
+                    </tr>
+                    <tr>
+                        <td class="type-fcr">FCR</td>
+                        <td>97%</td>
+                        <td id="fcr_97_pace"></td>
+                        <td>30 minutes</td>
+                    </tr>
+                    <tr>
+                        <td class="type-mcr-scr">MCR</td>
+                        <td>90%</td>
+                        <td id="mcr_90_pace"></td>
+                        <td>45-60 minutes</td>
+                    </tr>
+                    <tr>
+                        <td rowspan="2" class="type-mcr-scr">SCR</td>
+                        <td>85%</td>
+                        <td id="scr_85_pace_1"></td>
+                        <td rowspan="2">60-90 minutes</td>
+                    </tr>
+                    <tr>
+                        <td>80%</td>
+                        <td id="scr_80_pace_2"></td>
+                    </tr>
+                    <tr>
+                        <td class="type-arr">ARR</td>
+                        <td>70%</td>
+                        <td id="arr_70_pace"></td>
+                        <td>30+ minutes</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
 
-    <div class="section">
-        <h2>Recommended Training Distance</h2>
-        <div class="form-group">
-            <label for="mileage">Weekly Mileage (km):</label>
-            <input type="number" id="mileage" placeholder="Enter mileage" oninput="calculateTrainingDistance()" min="0">
+        <div class="section">
+            <h2><span class="icon">📊</span>Weekly Training Distance</h2>
+            <div class="form-group">
+                <label for="mileage">Weekly Mileage (km):</label>
+                <input type="number" id="mileage" placeholder="Enter your weekly mileage" oninput="calculateTrainingDistance()" min="0">
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>📈 % of Weekly Mileage</th>
+                        <th>🏃‍♂️ Training Type</th>
+                        <th>📏 Distance Range</th>
+                    </tr>
+                </thead>
+                <tbody id="trainingDistanceBody">
+                    <tr>
+                        <td><strong>5-10%</strong></td>
+                        <td class="type-ext">EXT / FCR</td>
+                        <td id="mileage_5_10"></td>
+                    </tr>
+                    <tr>
+                        <td><strong>60%</strong></td>
+                        <td class="type-mcr-scr">MCR / SCR</td>
+                        <td id="mileage_60"></td>
+                    </tr>
+                    <tr>
+                        <td><strong>20-30%</strong></td>
+                        <td class="type-arr">ARR</td>
+                        <td id="mileage_20_30"></td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
-        <table>
-            <thead>
-                <tr>
-                    <th>% Mileage</th>
-                    <th>Type</th>
-                    <th>Distance</th>
-                </tr>
-            </thead>
-            <tbody id="trainingDistanceBody">
-                <tr>
-                    <td>5-10%</td>
-                    <td class="type-ext">EXT / FCR</td>
-                    <td id="mileage_5_10"></td>
-                </tr>
-                <tr>
-                    <td>60%</td>
-                    <td class="type-mcr-scr">MCR / SCR</td>
-                    <td id="mileage_60"></td>
-                </tr>
-                <tr>
-                    <td>20-30%</td>
-                    <td class="type-arr">ARR</td>
-                    <td id="mileage_20_30"></td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
 
-    <div class="section">
-        <h2>Heart Rate Zones</h2>
-        <div class="form-group">
-            <label for="ageHR">Age:</label>
-            <input type="number" id="ageHR" placeholder="Enter your age" min="1">
+        <div class="section">
+            <h2><span class="icon">❤️</span>Heart Rate Training Zones</h2>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="ageHR">Age:</label>
+                    <input type="number" id="ageHR" placeholder="Your age" min="1">
+                </div>
+                <div class="form-group">
+                    <label for="maxHR">Max Heart Rate (optional):</label>
+                    <input type="number" id="maxHR" placeholder="If known" min="1">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="rhr">Resting Heart Rate (RHR):</label>
+                <input type="number" id="rhr" placeholder="Measure when you wake up" min="1">
+            </div>
+            <button onclick="calculateHRZones()">💓 Calculate Heart Rate Zones</button>
+            <table>
+                <thead>
+                    <tr>
+                        <th>🎯 Training Zone</th>
+                        <th>📊 HR Reserve %</th>
+                        <th>💓 Heart Rate Range</th>
+                    </tr>
+                </thead>
+                <tbody id="hrZonesBody">
+                    <tr>
+                        <td class="hr-zone-recovery"><strong>Recovery Zone</strong></td>
+                        <td>Below 60%</td>
+                        <td id="hr_zone_1"></td>
+                    </tr>
+                    <tr>
+                        <td class="hr-zone-aerobic"><strong>Aerobic Zone</strong></td>
+                        <td>60-80%</td>
+                        <td id="hr_zone_2"></td>
+                    </tr>
+                    <tr>
+                        <td class="hr-zone-anaerobic"><strong>Anaerobic Zone</strong></td>
+                        <td>Above 80%</td>
+                        <td id="hr_zone_3"></td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
-        <div class="form-group">
-            <label for="maxHR">Max Heart Rate:</label>
-            <input type="number" id="maxHR" placeholder="Enter your Max HR (optional)" min="1">
-        </div>
-        <div class="form-group">
-            <label for="rhr">Resting Heart Rate (RHR):</label>
-            <input type="number" id="rhr" placeholder="Enter your RHR" min="1">
-        </div>
-        <button onclick="calculateHRZones()">Calculate HR Zones</button>
-        <table>
-            <thead>
-                <tr>
-                    <th>Zone</th>
-                    <th>Percentage</th>
-                    <th>Heart Rate</th>
-                </tr>
-            </thead>
-            <tbody id="hrZonesBody">
-                <tr>
-                    <td>Recovery</td>
-                    <td id="hr_zone_1_percent">below 60%</td>
-                    <td id="hr_zone_1"></td>
-                </tr>
-                <tr>
-                    <td>Aerobic</td>
-                    <td>60-80%</td>
-                    <td id="hr_zone_2"></td>
-                </tr>
-                <tr>
-                    <td>Anaerobic</td>
-                    <td id="hr_zone_3_percent">above 80%</td>
-                    <td id="hr_zone_3"></td>
-                </tr>
-            </tbody>
-        </table>
     </div>
 
     <script>
@@ -371,15 +583,15 @@
         const METERS_PER_KM = 1000;
         const VCR_SPEED_OFFSET = 0.2; // The constant to subtract for VCR calculation
 
-        // Race Distances in Kilometers (these are for calculation, not display labels)
-        const DISTANCE_5K = 5; // New 5K distance constant
+        // Race Distances in Kilometers
+        const DISTANCE_5K = 5;
         const DISTANCE_10K = 10;
         const DISTANCE_HALF_MARATHON = 21.0975;
         const DISTANCE_MARATHON = 42.195;
 
         function formatPace(totalSeconds) {
             if (isNaN(totalSeconds) || totalSeconds <= 0) {
-                return "N/A"; // Handle cases where pace might be undefined or zero
+                return "N/A";
             }
             const minutes = Math.floor(totalSeconds / 60);
             const seconds = Math.round(totalSeconds % 60);
@@ -393,61 +605,89 @@
             const hours = Math.floor(totalSeconds / 3600);
             const minutes = Math.floor((totalSeconds % 3600) / 60);
             const seconds = Math.round(totalSeconds % 60);
-
-            if (hours > 0) {
-                return `${hours}:${minutes < 10 ? '0' : ''}${minutes} hr`;
-            } else {
-                return `${minutes}:${seconds < 10 ? '0' : ''}${seconds} min`;
-            }
+            
+            // Always display in H:M:S format for clarity
+            return `${hours}:${minutes < 10 ? '0' : ''}${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
         }
 
-
         function calculateVCRAndPace() {
-            const distanceMeters = parseFloat(document.getElementById("distance").value);
-            const paceMinutes = parseInt(document.getElementById("paceMinutes").value);
-            const paceSeconds = parseInt(document.getElementById("paceSeconds").value);
+            const button = event.target;
+            const section = button.closest('.section');
+            
+            // Add loading state
+            section.classList.add('calculating');
+            button.textContent = '🔄 Calculating...';
+            
+            setTimeout(() => {
+                const distanceMeters = parseFloat(document.getElementById("distance").value);
+                const paceMinutes = parseInt(document.getElementById("paceMinutes").value);
+                const paceSeconds = parseInt(document.getElementById("paceSeconds").value);
 
-            let speedMps_from_input;
-            let vcr;
+                let speedMps_from_input;
+                let vcr;
 
-            if (!isNaN(distanceMeters) && distanceMeters > 0) {
-                speedMps_from_input = distanceMeters / TIME_TRIAL_DURATION_SECONDS;
-            } else if (!isNaN(paceMinutes) || !isNaN(paceSeconds)) {
-                const totalPaceSeconds = (paceMinutes * 60) + paceSeconds;
-                if (totalPaceSeconds > 0) {
-                    speedMps_from_input = METERS_PER_KM / totalPaceSeconds;
+                if (!isNaN(distanceMeters) && distanceMeters > 0) {
+                    speedMps_from_input = distanceMeters / TIME_TRIAL_DURATION_SECONDS;
+                } else if (!isNaN(paceMinutes) || !isNaN(paceSeconds)) {
+                    const totalPaceSeconds = (paceMinutes * 60) + (paceSeconds || 0);
+                    if (totalPaceSeconds > 0) {
+                        speedMps_from_input = METERS_PER_KM / totalPaceSeconds;
+                    } else {
+                        showError("Please enter a valid pace (minutes and/or seconds) greater than zero.");
+                        resetCalculation(button);
+                        return;
+                    }
                 } else {
-                    document.getElementById("vcrValue").innerText = "";
-                    document.getElementById("vcrPaceValue").innerText = "";
-                    document.getElementById("vcrResult").style.display = 'none';
-                    alert("Please enter a valid pace (minutes and/or seconds) greater than zero.");
-                    resetRacePaceChart();
+                    showError("Please enter either distance or pace for the 30-minute time trial.");
+                    resetCalculation(button);
                     return;
                 }
-            } else {
-                document.getElementById("vcrValue").innerText = "";
-                document.getElementById("vcrPaceValue").innerText = "";
-                document.getElementById("vcrResult").style.display = 'none';
-                alert("Please enter either distance or pace for the 30-minute time trial.");
-                resetRacePaceChart();
-                return;
+
+                vcr = (speedMps_from_input - VCR_SPEED_OFFSET).toFixed(2);
+
+                let vcrPaceSecondsPerKm = "N/A";
+                if (parseFloat(vcr) > 0) {
+                    vcrPaceSecondsPerKm = METERS_PER_KM / parseFloat(vcr);
+                }
+
+                const formattedVcrPace = formatPace(vcrPaceSecondsPerKm);
+
+                document.getElementById("vcrValue").innerHTML = `✅ Your VCR is: <strong>${vcr} m/s</strong>`;
+                document.getElementById("vcrPaceValue").innerHTML = `⏱️ VCR Pace: <strong>${formattedVcrPace} min/km</strong>`;
+                
+                const result = document.getElementById("vcrResult");
+                result.style.display = 'flex';
+                result.classList.add('pulse');
+                
+                setTimeout(() => result.classList.remove('pulse'), 2000);
+
+                estimateRacePaces(vcr);
+                updatePaceTable(vcr);
+                
+                // Reset button
+                section.classList.remove('calculating');
+                button.textContent = '🚀 Calculate VCR & Training Paces';
+                
+            }, 500);
+        }
+
+        function showError(message) {
+            const result = document.getElementById("vcrResult");
+            result.style.background = 'linear-gradient(135deg, #fed7d7 0%, #fbb6ce 100%)';
+            result.style.borderColor = '#e53e3e';
+            result.style.color = '#c53030';
+            document.getElementById("vcrValue").innerHTML = `❌ ${message}`;
+            document.getElementById("vcrPaceValue").innerHTML = '';
+            result.style.display = 'flex';
+            resetRacePaceChart();
+        }
+
+        function resetCalculation(buttonElement) {
+            const section = buttonElement.closest('.section');
+            if (section) {
+                section.classList.remove('calculating');
+                buttonElement.textContent = buttonElement.dataset.originalText || '🚀 Calculate VCR & Training Paces';
             }
-
-            vcr = (speedMps_from_input - VCR_SPEED_OFFSET).toFixed(2);
-
-            let vcrPaceSecondsPerKm = "N/A";
-            if (parseFloat(vcr) > 0) {
-                vcrPaceSecondsPerKm = METERS_PER_KM / parseFloat(vcr);
-            }
-
-            const formattedVcrPace = formatPace(vcrPaceSecondsPerKm);
-
-            document.getElementById("vcrValue").innerText = `Your VCR is: ${vcr} m/s`;
-            document.getElementById("vcrPaceValue").innerText = `(VCR Pace: ${formattedVcrPace} min/km)`;
-            document.getElementById("vcrResult").style.display = 'flex';
-
-            estimateRacePaces(vcr);
-            updatePaceTable(vcr);
         }
 
         function updatePaceTable(vcr) {
@@ -457,11 +697,11 @@
             for (let i = 0; i < percentages.length; i++) {
                 const vcrNum = parseFloat(vcr);
                 if (!isNaN(vcrNum) && vcrNum > 0) {
-                    const targetSpeedMps = vcrNum * percentages [i];
+                    const targetSpeedMps = vcrNum * percentages[i];
                     const paceSecondsPerKm = METERS_PER_KM / targetSpeedMps;
-                    document.getElementById(ids [i]).innerText = formatPace(paceSecondsPerKm);
+                    document.getElementById(ids[i]).innerHTML = `<strong>${formatPace(paceSecondsPerKm)}</strong>`;
                 } else {
-                    document.getElementById(ids [i]).innerText = "N/A";
+                    document.getElementById(ids[i]).innerHTML = "N/A";
                 }
             }
         }
@@ -475,54 +715,54 @@
                 resetRacePaceChartContent();
                 return;
             }
+            
             estimatePaceChartSection.style.display = 'block';
+            if (window.innerWidth < 768) {
+                 estimatePaceChartSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
 
-            // 5K (5 km) = 110% VCR - NEW
+            // 5K calculation
             const speed5kMps = vcrNum * 1.10;
             const pace5kSecondsPerKm = METERS_PER_KM / speed5kMps;
             const totalTime5kSeconds = pace5kSecondsPerKm * DISTANCE_5K;
-            document.getElementById("est_5k_pace").innerText = formatPace(pace5kSecondsPerKm);
-            document.getElementById("est_5k_time").innerText = formatTime(totalTime5kSeconds);
+            document.getElementById("est_5k_pace").innerHTML = `<strong>${formatPace(pace5kSecondsPerKm)}</strong>`;
+            document.getElementById("est_5k_time").innerHTML = `<strong>${formatTime(totalTime5kSeconds)}</strong>`;
 
-            // 10K (10 km) = 105% VCR
+            // 10K calculation
             const speed10kMps = vcrNum * 1.05;
             const pace10kSecondsPerKm = METERS_PER_KM / speed10kMps;
             const totalTime10kSeconds = pace10kSecondsPerKm * DISTANCE_10K;
-            document.getElementById("est_10k_pace").innerText = formatPace(pace10kSecondsPerKm);
-            document.getElementById("est_10k_time").innerText = formatTime(totalTime10kSeconds);
+            document.getElementById("est_10k_pace").innerHTML = `<strong>${formatPace(pace10kSecondsPerKm)}</strong>`;
+            document.getElementById("est_10k_time").innerHTML = `<strong>${formatTime(totalTime10kSeconds)}</strong>`;
 
-            // Half Marathon (21.0975 km) = 95-97% VCR
+            // Half Marathon calculation
             const speedHalfMarathonLowerMps = vcrNum * 0.95;
             const speedHalfMarathonUpperMps = vcrNum * 0.97;
             const paceHalfMarathonLowerSecondsPerKm = METERS_PER_KM / speedHalfMarathonUpperMps;
             const paceHalfMarathonUpperSecondsPerKm = METERS_PER_KM / speedHalfMarathonLowerMps;
-            const totalTimeHalfMarathonLowerSeconds = paceHalfMarathonUpperSecondsPerKm * DISTANCE_HALF_MARATHON;
-            const totalTimeHalfMarathonUpperSeconds = paceHalfMarathonLowerSecondsPerKm * DISTANCE_HALF_MARATHON;
+            const totalTimeHalfMarathonLowerSeconds = paceHalfMarathonLowerSecondsPerKm * DISTANCE_HALF_MARATHON;
+            const totalTimeHalfMarathonUpperSeconds = paceHalfMarathonUpperSecondsPerKm * DISTANCE_HALF_MARATHON;
 
-            document.getElementById("est_half_marathon_pace").innerText = `${formatPace(paceHalfMarathonUpperSecondsPerKm)} - ${formatPace(paceHalfMarathonLowerSecondsPerKm)}`;
-            document.getElementById("est_half_marathon_time").innerText = `${formatTime(totalTimeHalfMarathonUpperSeconds)} - ${formatTime(totalTimeHalfMarathonLowerSeconds)}`;
+            document.getElementById("est_half_marathon_pace").innerHTML = `<strong>${formatPace(paceHalfMarathonLowerSecondsPerKm)} - ${formatPace(paceHalfMarathonUpperSecondsPerKm)}</strong>`;
+            document.getElementById("est_half_marathon_time").innerHTML = `<strong>${formatTime(totalTimeHalfMarathonLowerSeconds)} - ${formatTime(totalTimeHalfMarathonUpperSeconds)}</strong>`;
 
-            // Marathon (42.195 km) = 85-90% VCR
+            // Marathon calculation
             const speedMarathonLowerMps = vcrNum * 0.85;
             const speedMarathonUpperMps = vcrNum * 0.90;
             const paceMarathonLowerSecondsPerKm = METERS_PER_KM / speedMarathonUpperMps;
             const paceMarathonUpperSecondsPerKm = METERS_PER_KM / speedMarathonLowerMps;
-            const totalTimeMarathonLowerSeconds = paceMarathonUpperSecondsPerKm * DISTANCE_MARATHON;
-            const totalTimeMarathonUpperSeconds = paceHalfMarathonLowerSecondsPerKm * DISTANCE_MARATHON; // Corrected this line
+            const totalTimeMarathonLowerSeconds = paceMarathonLowerSecondsPerKm * DISTANCE_MARATHON;
+            const totalTimeMarathonUpperSeconds = paceMarathonUpperSecondsPerKm * DISTANCE_MARATHON;
 
-            document.getElementById("est_marathon_pace").innerText = `${formatPace(paceMarathonUpperSecondsPerKm)} - ${formatPace(paceMarathonLowerSecondsPerKm)}`;
-            document.getElementById("est_marathon_time").innerText = `${formatTime(totalTimeMarathonUpperSeconds)} - ${formatTime(totalTimeMarathonLowerSeconds)}`;
+            document.getElementById("est_marathon_pace").innerHTML = `<strong>${formatPace(paceMarathonLowerSecondsPerKm)} - ${formatPace(paceMarathonUpperSecondsPerKm)}</strong>`;
+            document.getElementById("est_marathon_time").innerHTML = `<strong>${formatTime(totalTimeMarathonLowerSeconds)} - ${formatTime(totalTimeMarathonUpperSeconds)}</strong>`;
         }
 
         function resetRacePaceChartContent() {
-            document.getElementById("est_5k_pace").innerText = "";
-            document.getElementById("est_5k_time").innerText = "";
-            document.getElementById("est_10k_pace").innerText = "";
-            document.getElementById("est_10k_time").innerText = "";
-            document.getElementById("est_half_marathon_pace").innerText = "";
-            document.getElementById("est_half_marathon_time").innerText = "";
-            document.getElementById("est_marathon_pace").innerText = "";
-            document.getElementById("est_marathon_time").innerText = "";
+            const ids = ["est_5k_pace", "est_5k_time", "est_10k_pace", "est_10k_time", "est_half_marathon_pace", "est_half_marathon_time", "est_marathon_pace", "est_marathon_time"];
+            ids.forEach(id => {
+                document.getElementById(id).innerHTML = "";
+            });
         }
 
         function resetRacePaceChart() {
@@ -530,83 +770,99 @@
             document.getElementById("estimatePaceChartSection").style.display = 'none';
         }
 
-
         function calculateTrainingDistance() {
             const mileage = parseFloat(document.getElementById("mileage").value);
             if (!isNaN(mileage) && mileage >= 0) {
-                document.getElementById("mileage_5_10").innerText = `${(mileage * 0.05).toFixed(2)} - ${(mileage * 0.10).toFixed(2)} km`;
-                document.getElementById("mileage_60").innerText = `${(mileage * 0.60).toFixed(2)} km`;
-                document.getElementById("mileage_20_30").innerText = `${(mileage * 0.20).toFixed(2)} - ${(mileage * 0.30).toFixed(2)} km`;
+                document.getElementById("mileage_5_10").innerHTML = `<strong>${(mileage * 0.05).toFixed(1)} - ${(mileage * 0.10).toFixed(1)} km</strong>`;
+                document.getElementById("mileage_60").innerHTML = `<strong>${(mileage * 0.60).toFixed(1)} km</strong>`;
+                document.getElementById("mileage_20_30").innerHTML = `<strong>${(mileage * 0.20).toFixed(1)} - ${(mileage * 0.30).toFixed(1)} km</strong>`;
             } else {
-                document.getElementById("mileage_5_10").innerText = "";
-                document.getElementById("mileage_60").innerText = "";
-                document.getElementById("mileage_20_30").innerText = "";
+                document.getElementById("mileage_5_10").innerHTML = "";
+                document.getElementById("mileage_60").innerHTML = "";
+                document.getElementById("mileage_20_30").innerHTML = "";
             }
         }
 
         function calculateHRZones() {
-            const age = parseInt(document.getElementById("ageHR").value);
-            const maxHRInput = parseInt(document.getElementById("maxHR").value);
-            const rhr = parseInt(document.getElementById("rhr").value);
+            const button = event.target;
+            const section = button.closest('.section');
+            
+            // Add loading state
+            section.classList.add('calculating');
+            button.textContent = '🔄 Calculating...';
+            
+            setTimeout(() => {
+                const age = parseInt(document.getElementById("ageHR").value);
+                const maxHRInput = parseInt(document.getElementById("maxHR").value);
+                const rhr = parseInt(document.getElementById("rhr").value);
 
-            let maxHR;
+                let maxHR;
 
-            if (isNaN(rhr) || rhr <= 0) {
-                alert("Please enter a valid Resting Heart Rate (RHR).");
-                resetHRZones();
-                return;
-            }
+                if (isNaN(rhr) || rhr <= 0) {
+                    showHRError("Please enter a valid Resting Heart Rate (RHR).", button);
+                    return;
+                }
 
-            if (!isNaN(maxHRInput) && maxHRInput > 0) {
-                maxHR = maxHRInput;
-            } else if (!isNaN(age) && age > 0) {
-                maxHR = 220 - age; // Estimated Max HR
-            } else {
-                alert("Please enter either your age or your Max Heart Rate.");
-                resetHRZones();
-                return;
-            }
+                if (!isNaN(maxHRInput) && maxHRInput > 0) {
+                    maxHR = maxHRInput;
+                } else if (!isNaN(age) && age > 0) {
+                    maxHR = 220 - age;
+                } else {
+                    showHRError("Please enter either your age or your Max Heart Rate.", button);
+                    return;
+                }
 
-            if (maxHR <= rhr) {
-                alert("Max Heart Rate must be greater than Resting Heart Rate.");
-                resetHRZones();
-                return;
-            }
+                if (maxHR <= rhr) {
+                    showHRError("Max Heart Rate must be greater than Resting Heart Rate.", button);
+                    return;
+                }
 
-            const hrReserve = maxHR - rhr;
+                const hrReserve = maxHR - rhr;
+                const zone2_lower_percent = 0.60;
+                const zone2_upper_percent = 0.80;
+                const zone2_hr_lower = Math.ceil((hrReserve * zone2_lower_percent) + rhr);
+                const zone2_hr_upper = Math.floor((hrReserve * zone2_upper_percent) + rhr);
 
-            const zone2_lower_percent = 0.60;
-            const zone2_upper_percent = 0.80;
+                document.getElementById("hr_zone_1").innerHTML = `<strong>Below ${zone2_hr_lower} bpm</strong>`;
+                document.getElementById("hr_zone_2").innerHTML = `<strong>${zone2_hr_lower} - ${zone2_hr_upper} bpm</strong>`;
+                document.getElementById("hr_zone_3").innerHTML = `<strong>Above ${zone2_hr_upper} bpm</strong>`;
 
-            const zone2_hr_lower = Math.ceil((hrReserve * zone2_lower_percent) + rhr);
-            const zone2_hr_upper = Math.floor((hrReserve * zone2_upper_percent) + rhr);
-
-            document.getElementById("hr_zone_1").innerText = `Below ${zone2_hr_lower}`;
-            document.getElementById("hr_zone_2").innerText = `${zone2_hr_lower} - ${zone2_hr_upper}`;
-            document.getElementById("hr_zone_3").innerText = `Above ${zone2_hr_upper}`;
+                // Reset button
+                section.classList.remove('calculating');
+                button.textContent = '💓 Calculate Heart Rate Zones';
+                
+            }, 500);
         }
 
-        function resetHRZones() {
-            document.getElementById("hr_zone_1").innerText = "";
-            document.getElementById("hr_zone_2").innerText = "";
-            document.getElementById("hr_zone_3").innerText = "";
+        function showHRError(message, buttonElement) {
+            alert(message); // Simple alert for HR errors
+            resetCalculation(buttonElement);
         }
 
-        // Initialize display properties and add min attributes on load
+        // Initialize display properties on load
         document.addEventListener('DOMContentLoaded', (event) => {
             document.getElementById("vcrResult").style.display = 'none';
-            document.getElementById("estimatePaceChartSection").style.display = 'none'; // Hide initially
+            document.getElementById("estimatePaceChartSection").style.display = 'none';
+            
+            const buttons = document.querySelectorAll('button');
+            buttons.forEach(button => {
+                button.dataset.originalText = button.textContent;
+            });
 
-            // Add min attributes for better input validation directly in HTML
-            document.getElementById("distance").setAttribute("min", "0");
-            document.getElementById("paceMinutes").setAttribute("min", "0");
-            document.getElementById("paceSeconds").setAttribute("min", "0");
-            document.getElementById("mileage").setAttribute("min", "0");
-            document.getElementById("ageHR").setAttribute("min", "1");
-            document.getElementById("maxHR").setAttribute("min", "1");
-            document.getElementById("rhr").setAttribute("min", "1");
+            // Add input validation
+            const inputs = document.querySelectorAll('input[type="number"]');
+            inputs.forEach(input => {
+                input.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        // Find the button in the same section and click it
+                        const parentSection = this.closest('.section');
+                        if (parentSection) {
+                            parentSection.querySelector('button').click();
+                        }
+                    }
+                });
+            });
         });
-
     </script>
 </body>
 </html>
