@@ -92,14 +92,14 @@
             background-color: #fff;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             border-radius: 8px;
-            overflow-x: auto;
+            overflow-x: auto; /* Key for table responsiveness */
         }
         th, td {
             border: 1px solid #ddd;
             padding: 10px;
             text-align: center;
             font-size: 14px;
-            white-space: nowrap;
+            white-space: nowrap; /* Prevents text from wrapping in table cells */
         }
         th {
             background-color: #f8f9fa;
@@ -392,17 +392,19 @@
             if (hours > 0) {
                 parts.push(hours + "h");
             }
-            // Always show minutes, ensuring two digits if hours are present, or if it's just minutes/seconds
-            if (minutes > 0 || hours > 0 || seconds > 0) {
+            // Ensure minutes are always shown with two digits if hours are present, or as a single digit if no hours
+            // and ensure '0m' is shown if duration is less than 1 minute (and no hours)
+            if (minutes > 0 || (hours > 0) || (hours === 0 && minutes === 0 && seconds > 0)) {
                  parts.push(`${(hours > 0 && minutes < 10) ? '0' : ''}${minutes}m`);
             } else if (hours === 0 && minutes === 0 && seconds === 0) {
-                parts.push('0m'); // Handle case of 0 seconds for a short duration
+                parts.push('0m'); // For exactly 0 seconds, show '0m 00s'
             }
 
             // Always show seconds, ensuring two digits
             parts.push(`${seconds < 10 ? '0' : ''}${seconds}s`);
             
-            // Filter out empty strings from parts if any (e.g., if minutes was not pushed)
+            // Filter out empty strings that might arise from conditional pushes, then join
+            // For example, if parts was ['1h', '', '30s'] it would become ['1h', '30s']
             return parts.filter(Boolean).join(' ');
         }
 
@@ -525,6 +527,12 @@
             document.getElementById("est_half_marathon_time").innerText = "";
             document.getElementById("est_marathon_pace").innerText = "";
             document.getElementById("est_marathon_time").innerText = "";
+        }
+
+        // Function to reset the entire Estimated Pace Chart section (hide it)
+        function resetRacePaceChart() {
+            resetRacePaceChartContent();
+            document.getElementById("estimatePaceChartSection").style.display = 'none';
         }
 
 
