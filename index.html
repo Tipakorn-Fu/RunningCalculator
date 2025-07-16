@@ -59,6 +59,7 @@
         button:hover {
             background-color: #0056b3;
         }
+        /* Adjusted display for vcrResult to accommodate both VCR and Pace */
         #vcrResult {
             margin-top: 20px;
             padding: 15px;
@@ -67,7 +68,23 @@
             text-align: center;
             font-size: 18px;
             font-weight: bold;
+            /* Added flexbox for horizontal alignment */
+            display: flex;
+            flex-direction: column; /* Default for smaller screens */
+            align-items: center;
+            gap: 10px; /* Space between items */
         }
+        #vcrResult span {
+            display: block; /* Ensure each part is on its own line by default */
+        }
+        /* For larger screens, display results horizontally */
+        @media (min-width: 601px) {
+            #vcrResult {
+                flex-direction: row;
+                justify-content: center;
+            }
+        }
+
         table {
             width: 100%;
             border-collapse: collapse;
@@ -144,6 +161,15 @@
                 font-size: 12px;
             }
         }
+
+        /* Styles for Estimated Pace Chart to distinguish from training paces */
+        .estimated-pace-table th {
+            background-color: #d1ecf1; /* Light blue for estimated paces */
+            color: #0c5460;
+        }
+        .estimated-pace-table td {
+             background-color: #e2f2f5;
+        }
     </style>
 </head>
 <body>
@@ -153,16 +179,53 @@
         <h2>30 Min Time Trial Result</h2>
         <div class="form-group">
             <label for="distance">Distance (meters):</label>
-            <input type="number" id="distance" placeholder="Enter distance">
+            <input type="number" id="distance" placeholder="Enter distance" min="0">
         </div>
         <div class="form-group">
             <label for="paceMinutes">Pace (min/km):</label>
-            <input type="number" id="paceMinutes" placeholder="Minutes">
+            <input type="number" id="paceMinutes" placeholder="Minutes" min="0">
             <label for="paceSeconds">:</label>
             <input type="number" id="paceSeconds" placeholder="Seconds" min="0" max="59">
         </div>
         <button onclick="calculateVCRAndPace()">Calculate</button>
-        <div id="vcrResult" class="hidden"></div>
+        <div id="vcrResult" style="display: none;" aria-live="polite">
+            <span id="vcrValue"></span>
+            <span id="vcrPaceValue"></span>
+        </div>
+    </div>
+
+    <div class="section" id="estimatePaceChartSection" style="display: none;">
+        <h2>Estimated Race Pace Chart</h2>
+        <table class="estimated-pace-table">
+            <thead>
+                <tr>
+                    <th>Race Distance</th>
+                    <th>%VCR</th>
+                    <th>Estimated Pace (min/km)</th>
+                    <th>Estimated Time</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>10K</td>
+                    <td>105%</td>
+                    <td id="est_10k_pace"></td>
+                    <td id="est_10k_time"></td>
+                </tr>
+                <tr>
+                    <td>Half Marathon (21.0975K)</td>
+                    <td>95-97%</td>
+                    <td id="est_half_marathon_pace"></td>
+                    <td id="est_half_marathon_time"></td>
+                </tr>
+                <tr>
+                    <td>Marathon (42.195K)</td>
+                    <td>85-90%</td>
+                    <td id="est_marathon_pace"></td>
+                    <td id="est_marathon_time"></td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 
     <div class="section">
@@ -224,7 +287,7 @@
         <h2>Recommended Training Distance</h2>
         <div class="form-group">
             <label for="mileage">Weekly Mileage (km):</label>
-            <input type="number" id="mileage" placeholder="Enter mileage" oninput="calculateTrainingDistance()">
+            <input type="number" id="mileage" placeholder="Enter mileage" oninput="calculateTrainingDistance()" min="0">
         </div>
         <table>
             <thead>
@@ -258,15 +321,15 @@
         <h2>Heart Rate Zones</h2>
         <div class="form-group">
             <label for="ageHR">Age:</label>
-            <input type="number" id="ageHR" placeholder="Enter your age">
+            <input type="number" id="ageHR" placeholder="Enter your age" min="1">
         </div>
         <div class="form-group">
             <label for="maxHR">Max Heart Rate:</label>
-            <input type="number" id="maxHR" placeholder="Enter your Max HR (optional)">
+            <input type="number" id="maxHR" placeholder="Enter your Max HR (optional)" min="1">
         </div>
         <div class="form-group">
             <label for="rhr">Resting Heart Rate (RHR):</label>
-            <input type="number" id="rhr" placeholder="Enter your RHR">
+            <input type="number" id="rhr" placeholder="Enter your RHR" min="1">
         </div>
         <button onclick="calculateHRZones()">Calculate HR Zones</button>
         <table>
@@ -298,32 +361,102 @@
     </div>
 
     <script>
+        // Constants for better readability and maintainability
+        const TIME_TRIAL_DURATION_SECONDS = 30 * 60; // 30 minutes in seconds
+        const METERS_PER_KM = 1000;
+        const VCR_SPEED_OFFSET = 0.2; // The constant to subtract for VCR calculation
+
+        // Race Distances in Kilometers
+        const DISTANCE_10K = 10;
+        const DISTANCE_HALF_MARATHON = 21.0975;
+        const DISTANCE_MARATHON = 42.195;
+
+        function formatPace(totalSeconds) {
+            if (isNaN(totalSeconds) || totalSeconds <= 0) {
+                return "N/A"; // Handle cases where pace might be undefined or zero
+            }
+            const minutes = Math.floor(totalSeconds / 60);
+            const seconds = Math.round(totalSeconds % 60);
+            return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+        }
+
+        function formatTime(totalSeconds) {
+            if (isNaN(totalSeconds) || totalSeconds <= 0) {
+                return "N/A";
+            }
+            const hours = Math.floor(totalSeconds / 3600);
+            const minutes = Math.floor((totalSeconds % 3600) / 60);
+            const seconds = Math.round(totalSeconds % 60);
+
+            let parts = [];
+            if (hours > 0) {
+                parts.push(hours + "h");
+            }
+            // Always show minutes, ensuring two digits if hours are present, or if it's just minutes/seconds
+            if (minutes > 0 || hours > 0 || seconds > 0) {
+                 parts.push(`${(hours > 0 && minutes < 10) ? '0' : ''}${minutes}m`);
+            } else if (hours === 0 && minutes === 0 && seconds === 0) {
+                parts.push('0m'); // Handle case of 0 seconds for a short duration
+            }
+
+            // Always show seconds, ensuring two digits
+            parts.push(`${seconds < 10 ? '0' : ''}${seconds}s`);
+            
+            // Filter out empty strings from parts if any (e.g., if minutes was not pushed)
+            return parts.filter(Boolean).join(' ');
+        }
+
+
         function calculateVCRAndPace() {
             const distanceMeters = parseFloat(document.getElementById("distance").value);
-            const paceMinutes = parseInt(document.getElementById("paceMinutes").value) || 0;
-            const paceSeconds = parseInt(document.getElementById("paceSeconds").value) || 0;
+            const paceMinutes = parseInt(document.getElementById("paceMinutes").value);
+            const paceSeconds = parseInt(document.getElementById("paceSeconds").value);
+
+            let speedMps_from_input; // This will be the speed derived from user input (distance or pace)
             let vcr;
 
             if (!isNaN(distanceMeters) && distanceMeters > 0) {
-                const speedMps = distanceMeters / (30 * 60);
-                vcr = (speedMps - 0.2).toFixed(2);
+                // Calculate speed based on distance and 30-min duration
+                speedMps_from_input = distanceMeters / TIME_TRIAL_DURATION_SECONDS;
             } else if (!isNaN(paceMinutes) || !isNaN(paceSeconds)) {
+                // Calculate speed based on provided pace (min/km)
                 const totalPaceSeconds = (paceMinutes * 60) + paceSeconds;
                 if (totalPaceSeconds > 0) {
-                    const speedMps = 1000 / totalPaceSeconds;
-                    vcr = (speedMps - 0.2).toFixed(2);
+                    speedMps_from_input = METERS_PER_KM / totalPaceSeconds;
                 } else {
-                    alert("Please enter either distance or pace.");
+                    document.getElementById("vcrValue").innerText = "";
+                    document.getElementById("vcrPaceValue").innerText = "";
+                    document.getElementById("vcrResult").style.display = 'none';
+                    alert("Please enter a valid pace (minutes and/or seconds) greater than zero.");
+                    resetRacePaceChart(); // Clear race chart on invalid input
                     return;
                 }
             } else {
-                alert("Please enter either distance or pace.");
+                document.getElementById("vcrValue").innerText = "";
+                document.getElementById("vcrPaceValue").innerText = "";
+                document.getElementById("vcrResult").style.display = 'none';
+                alert("Please enter either distance or pace for the 30-minute time trial.");
+                resetRacePaceChart(); // Clear race chart on invalid input
                 return;
             }
 
-            document.getElementById("vcrResult").innerText = `Your VCR is: ${vcr}`;
-            document.getElementById("vcrResult").classList.remove("hidden");
-            updatePaceTable(vcr);
+            // Calculate VCR from the derived speed
+            vcr = (speedMps_from_input - VCR_SPEED_OFFSET).toFixed(2);
+
+            // Calculate the "VCR Pace" by converting the VCR value (which is in m/s) to min/km pace
+            let vcrPaceSecondsPerKm = "N/A"; // Default in case vcr is invalid
+            if (parseFloat(vcr) > 0) { // Ensure VCR is a positive value for pace calculation
+                vcrPaceSecondsPerKm = METERS_PER_KM / parseFloat(vcr);
+            }
+            
+            const formattedVcrPace = formatPace(vcrPaceSecondsPerKm);
+
+            document.getElementById("vcrValue").innerText = `Your VCR is: ${vcr} m/s`; // Added unit for clarity
+            document.getElementById("vcrPaceValue").innerText = `(VCR Pace: ${formattedVcrPace} min/km)`; // Changed label
+            document.getElementById("vcrResult").style.display = 'flex'; // Show the container now
+
+            estimateRacePaces(vcr); // Call the race estimation function first
+            updatePaceTable(vcr); // Then update the regular pace table
         }
 
         function updatePaceTable(vcr) {
@@ -331,14 +464,69 @@
             const ids = ["ext_110_pace", "ext_105_pace", "fcr_97_pace", "mcr_90_pace", "scr_85_pace_1", "scr_80_pace_2", "arr_70_pace"];
 
             for (let i = 0; i < percentages.length; i++) {
-                const targetSpeedMps = vcr * percentages[i];
-                const paceSecondsPerKm = 1000 / targetSpeedMps;
-                const paceMinutes = Math.floor(paceSecondsPerKm / 60);
-                const paceSeconds = Math.round(paceSecondsPerKm % 60);
-                const formattedPace = `${paceMinutes}:${paceSeconds < 10 ? '0' : ''}${paceSeconds}`;
-                document.getElementById(ids[i]).innerText = formattedPace;
+                // Ensure vcr is a number and positive before calculating targetSpeedMps
+                const vcrNum = parseFloat(vcr);
+                if (!isNaN(vcrNum) && vcrNum > 0) {
+                    const targetSpeedMps = vcrNum * percentages[i];
+                    const paceSecondsPerKm = METERS_PER_KM / targetSpeedMps;
+                    document.getElementById(ids[i]).innerText = formatPace(paceSecondsPerKm);
+                } else {
+                    document.getElementById(ids[i]).innerText = "N/A"; // Clear or indicate not available
+                }
             }
         }
+
+        function estimateRacePaces(vcr) {
+            const vcrNum = parseFloat(vcr);
+            const estimatePaceChartSection = document.getElementById("estimatePaceChartSection");
+
+            if (isNaN(vcrNum) || vcrNum <= 0) {
+                estimatePaceChartSection.style.display = 'none';
+                resetRacePaceChartContent(); // Clear only the content, not the display (handled by parent)
+                return;
+            }
+            estimatePaceChartSection.style.display = 'block'; // Show the section
+
+            // 10K (10 km) = 105% VCR
+            const speed10kMps = vcrNum * 1.05;
+            const pace10kSecondsPerKm = METERS_PER_KM / speed10kMps;
+            const totalTime10kSeconds = pace10kSecondsPerKm * DISTANCE_10K;
+            document.getElementById("est_10k_pace").innerText = formatPace(pace10kSecondsPerKm);
+            document.getElementById("est_10k_time").innerText = formatTime(totalTime10kSeconds);
+
+            // Half Marathon (21.0975 km) = 95-97% VCR
+            const speedHalfMarathonLowerMps = vcrNum * 0.95;
+            const speedHalfMarathonUpperMps = vcrNum * 0.97;
+            const paceHalfMarathonLowerSecondsPerKm = METERS_PER_KM / speedHalfMarathonUpperMps; // Higher speed = lower pace (faster)
+            const paceHalfMarathonUpperSecondsPerKm = METERS_PER_KM / speedHalfMarathonLowerMps; // Lower speed = higher pace (slower)
+            const totalTimeHalfMarathonLowerSeconds = paceHalfMarathonUpperSecondsPerKm * DISTANCE_HALF_MARATHON;
+            const totalTimeHalfMarathonUpperSeconds = paceHalfMarathonLowerSecondsPerKm * DISTANCE_HALF_MARATHON;
+
+            document.getElementById("est_half_marathon_pace").innerText = `${formatPace(paceHalfMarathonUpperSecondsPerKm)} - ${formatPace(paceHalfMarathonLowerSecondsPerKm)}`;
+            document.getElementById("est_half_marathon_time").innerText = `${formatTime(totalTimeHalfMarathonUpperSeconds)} - ${formatTime(totalTimeHalfMarathonLowerSeconds)}`;
+
+            // Marathon (42.195 km) = 85-90% VCR
+            const speedMarathonLowerMps = vcrNum * 0.85;
+            const speedMarathonUpperMps = vcrNum * 0.90;
+            const paceMarathonLowerSecondsPerKm = METERS_PER_KM / speedMarathonUpperMps; // Higher speed = lower pace (faster)
+            const paceMarathonUpperSecondsPerKm = METERS_PER_KM / speedMarathonLowerMps; // Lower speed = higher pace (slower)
+            const totalTimeMarathonLowerSeconds = paceMarathonUpperSecondsPerKm * DISTANCE_MARATHON;
+            const totalTimeMarathonUpperSeconds = paceMarathonLowerSecondsPerKm * DISTANCE_MARATHON;
+
+            document.getElementById("est_marathon_pace").innerText = `${formatPace(paceMarathonUpperSecondsPerKm)} - ${formatPace(paceMarathonLowerSecondsPerKm)}`;
+            document.getElementById("est_marathon_time").innerText = `${formatTime(totalTimeMarathonUpperSeconds)} - ${formatTime(totalTimeMarathonLowerSeconds)}`;
+        }
+
+        // Function to clear the content of the Estimated Pace Chart
+        function resetRacePaceChartContent() {
+            document.getElementById("est_10k_pace").innerText = "";
+            document.getElementById("est_10k_time").innerText = "";
+            document.getElementById("est_half_marathon_pace").innerText = "";
+            document.getElementById("est_half_marathon_time").innerText = "";
+            document.getElementById("est_marathon_pace").innerText = "";
+            document.getElementById("est_marathon_time").innerText = "";
+        }
+
 
         function calculateTrainingDistance() {
             const mileage = parseFloat(document.getElementById("mileage").value);
@@ -357,25 +545,36 @@
             const age = parseInt(document.getElementById("ageHR").value);
             const maxHRInput = parseInt(document.getElementById("maxHR").value);
             const rhr = parseInt(document.getElementById("rhr").value);
-            let hrReserve;
+            
             let maxHR;
 
-            if (!isNaN(maxHRInput) && maxHRInput > 0) {
-                maxHR = maxHRInput;
-                hrReserve = maxHR - rhr;
-            } else if (!isNaN(age) && age > 0 && !isNaN(rhr)) {
-                maxHR = 220 - age;
-                hrReserve = maxHR - rhr;
-            } else {
-                alert("Please enter either your age and resting heart rate, or your max heart rate and resting heart rate.");
-                document.getElementById("hr_zone_1").innerText = "";
-                document.getElementById("hr_zone_2").innerText = "";
-                document.getElementById("hr_zone_3").innerText = "";
+            if (isNaN(rhr) || rhr <= 0) {
+                alert("Please enter a valid Resting Heart Rate (RHR).");
+                resetHRZones();
                 return;
             }
 
+            if (!isNaN(maxHRInput) && maxHRInput > 0) {
+                maxHR = maxHRInput;
+            } else if (!isNaN(age) && age > 0) {
+                maxHR = 220 - age; // Estimated Max HR
+            } else {
+                alert("Please enter either your age or your Max Heart Rate.");
+                resetHRZones();
+                return;
+            }
+            
+            if (maxHR <= rhr) {
+                alert("Max Heart Rate must be greater than Resting Heart Rate.");
+                resetHRZones();
+                return;
+            }
+
+            const hrReserve = maxHR - rhr;
+
             const zone2_lower_percent = 0.60;
             const zone2_upper_percent = 0.80;
+
             const zone2_hr_lower = Math.ceil((hrReserve * zone2_lower_percent) + rhr);
             const zone2_hr_upper = Math.floor((hrReserve * zone2_upper_percent) + rhr);
 
@@ -383,6 +582,28 @@
             document.getElementById("hr_zone_2").innerText = `${zone2_hr_lower} - ${zone2_hr_upper}`;
             document.getElementById("hr_zone_3").innerText = `Above ${zone2_hr_upper}`;
         }
+
+        function resetHRZones() {
+            document.getElementById("hr_zone_1").innerText = "";
+            document.getElementById("hr_zone_2").innerText = "";
+            document.getElementById("hr_zone_3").innerText = "";
+        }
+
+        // Initialize display properties and add min attributes on load
+        document.addEventListener('DOMContentLoaded', (event) => {
+            document.getElementById("vcrResult").style.display = 'none';
+            document.getElementById("estimatePaceChartSection").style.display = 'none'; // Hide initially
+
+            // Add min attributes for better input validation directly in HTML
+            document.getElementById("distance").setAttribute("min", "0");
+            document.getElementById("paceMinutes").setAttribute("min", "0");
+            document.getElementById("paceSeconds").setAttribute("min", "0");
+            document.getElementById("mileage").setAttribute("min", "0");
+            document.getElementById("ageHR").setAttribute("min", "1");
+            document.getElementById("maxHR").setAttribute("min", "1");
+            document.getElementById("rhr").setAttribute("min", "1");
+        });
+
     </script>
 </body>
 </html>
