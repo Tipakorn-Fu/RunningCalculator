@@ -478,20 +478,24 @@
                         <td>45-60 minutes</td>
                     </tr>
                     <tr>
-                        <td rowspan="2" class="type-mcr-scr">SCR</td>
+                        <td rowspan="3" class="type-mcr-scr">SCR</td>
                         <td>85%</td>
                         <td id="scr_85_pace_1"></td>
-                        <td rowspan="2">60-90 minutes</td>
+                        <td rowspan="3">60-90 minutes</td>
                     </tr>
                     <tr>
                         <td>80%</td>
                         <td id="scr_80_pace_2"></td>
                     </tr>
                     <tr>
+                        <td>75%</td>
+                        <td id="scr_75_pace_3"></td>
+                    </tr>
+	  <tr>
                         <td class="type-arr">ARR</td>
                         <td>70%</td>
                         <td id="arr_70_pace"></td>
-                        <td>30+ minutes</td>
+                        <td>30 minutes</td>
                     </tr>
                 </tbody>
             </table>
@@ -691,8 +695,8 @@
         }
 
         function updatePaceTable(vcr) {
-            const percentages = [1.10, 1.05, 0.97, 0.90, 0.85, 0.80, 0.70];
-            const ids = ["ext_110_pace", "ext_105_pace", "fcr_97_pace", "mcr_90_pace", "scr_85_pace_1", "scr_80_pace_2", "arr_70_pace"];
+            const percentages = [1.10, 1.05, 0.97, 0.90, 0.85, 0.80, 0.75, 0.70];
+            const ids = ["ext_110_pace", "ext_105_pace", "fcr_97_pace", "mcr_90_pace", "scr_85_pace_1", "scr_80_pace_2", "scr_75_pace_3", "arr_70_pace"];
 
             for (let i = 0; i < percentages.length; i++) {
                 const vcrNum = parseFloat(vcr);
