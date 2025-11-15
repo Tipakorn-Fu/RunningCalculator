@@ -8,210 +8,539 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-body {
-    font-family: 'Inter', sans-serif;
-    background: #0f1115; /* dark performance base */
-    color: #e2e8f0;
-    line-height: 1.6;
-    min-height: 100vh;
-    padding: 24px 0;
-}
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #1e3a8a 0%, #0c4a6e 100%);
+            color: #1f2937;
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px 0;
+        }
 
-/* CONTAINER */
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
-}
+        @media (prefers-color-scheme: dark) {
+            body {
+                background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+                color: #e5e7eb;
+            }
+        }
 
-/* HEADERS */
-h1 {
-    text-align: center;
-    font-size: 2.4rem;
-    font-weight: 700;
-    color: #ffffff;
-    margin-bottom: 35px;
-    letter-spacing: 0.5px;
-}
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
 
-h2 {
-    font-size: 1.3rem;
-    font-weight: 600;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    color: #a0aec0;
-    margin-bottom: 18px;
-}
+        h1 {
+            text-align: center;
+            color: white;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 30px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
 
-/* CORE SECTIONS (glass) */
-.section {
-    background: rgba(255,255,255,0.06);
-    border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 18px;
-    padding: 28px;
-    margin-bottom: 28px;
-    backdrop-filter: blur(12px);
-    transition: all 0.25s ease;
-}
+        h2 {
+            color: #1e40af;
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
 
-.section:hover {
-    border-color: rgba(255,255,255,0.15);
-    transform: translateY(-3px);
-}
+        @media (prefers-color-scheme: dark) {
+            h2 {
+                color: #60a5fa;
+            }
+        }
 
-/* INPUTS */
-label {
-    display: block;
-    font-size: 0.85rem;
-    color: #cbd5e0;
-    margin-bottom: 6px;
-}
+        .section {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(30, 64, 175, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
 
-input {
-    width: 100%;
-    padding: 12px 14px;
-    border-radius: 10px;
-    font-size: 16px;
-    border: 1px solid #2d3748;
-    background: #1a1d24;
-    color: #e2e8f0;
-    transition: 0.25s border-color ease;
-}
+        @media (prefers-color-scheme: dark) {
+            .section {
+                background: #1e293b;
+                border: 1px solid rgba(96, 165, 250, 0.2);
+                box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            }
+        }
 
-input:focus {
-    border-color: #38bdf8; /* sport cyan */
-    outline: none;
-}
+        .section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(30, 64, 175, 0.2);
+        }
 
-/* BUTTONS */
-button {
-    width: 100%;
-    padding: 14px 20px;
-    background: #38bdf8;
-    border: none;
-    border-radius: 10px;
-    color: #0f1115;
-    font-size: 1rem;
-    font-weight: 700;
-    cursor: pointer;
-    transition: 0.25s ease;
-}
+        @media (prefers-color-scheme: dark) {
+            .section:hover {
+                box-shadow: 0 20px 40px rgba(96, 165, 250, 0.15);
+            }
+        }
 
-button:hover {
-    background: #4dd6ff;
-    transform: translateY(-2px);
-}
+        .form-group {
+            margin-bottom: 20px;
+        }
 
-button:active {
-    transform: translateY(0px);
-}
+        .form-row {
+            display: flex;
+            gap: 15px;
+            align-items: end;
+        }
 
-/* RESULT BOX */
-#vcrResult {
-    margin-top: 18px;
-    padding: 18px;
-    border-radius: 14px;
-    background: rgba(56, 189, 248, 0.1);
-    border: 1px solid #38bdf8;
-    color: #e2e8f0;
-    text-align: center;
-    display: none;
-}
+        .form-row .form-group {
+            flex: 1;
+        }
 
-/* TABLES */
-table {
-    width: 100%;
-    border-collapse: collapse;
-    overflow: hidden;
-    background: rgba(255,255,255,0.03);
-    border-radius: 14px;
-    margin-top: 20px;
-}
+        .form-row .form-group:last-child {
+            flex: 0.5;
+        }
 
-th {
-    padding: 12px 10px;
-    background: rgba(255,255,255,0.06);
-    color: #cbd5e0;
-    text-transform: uppercase;
-    font-size: 11px;
-    letter-spacing: 0.7px;
-}
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #374151;
+            font-size: 0.9rem;
+        }
 
-td {
-    padding: 12px 10px;
-    text-align: center;
-    border-top: 1px solid rgba(255,255,255,0.06);
-}
+        @media (prefers-color-scheme: dark) {
+            label {
+                color: #d1d5db;
+            }
+        }
 
-tr:hover {
-    background: rgba(255,255,255,0.04);
-}
+        input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: #f9fafb;
+            color: #111827;
+        }
 
-/* TRAINING LABEL COLORS – SPORT MODERN */
-.type-ext {
-    background: #ef4444;
-    color: white;
-    font-weight: 600;
-}
+        @media (prefers-color-scheme: dark) {
+            input {
+                background: #0f172a;
+                border: 2px solid #374151;
+                color: #f3f4f6;
+            }
+        }
 
-.type-fcr {
-    background: #f97316;
-    color: white;
-    font-weight: 600;
-}
+        input:focus {
+            outline: none;
+            border-color: #2563eb;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
 
-.type-mcr-scr {
-    background: #eab308;
-    color: #0f1115;
-    font-weight: 700;
-}
+        @media (prefers-color-scheme: dark) {
+            input:focus {
+                border-color: #60a5fa;
+                background: #1e293b;
+                box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.2);
+            }
+        }
 
-.type-arr {
-    background: #22c55e;
-    color: #0f1115;
-    font-weight: 700;
-}
+        button {
+            background: linear-gradient(135deg, #1e40af 0%, #0c4a6e 100%);
+            color: white;
+            padding: 14px 28px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            width: 100%;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(30, 64, 175, 0.3);
+        }
 
-/* HR Zones */
-.hr-zone-recovery {
-    background: #22c55e;
-    color: #0f1115;
-}
+        @media (prefers-color-scheme: dark) {
+            button {
+                background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+                box-shadow: 0 4px 15px rgba(37, 99, 235, 0.4);
+            }
+        }
 
-.hr-zone-aerobic {
-    background: #eab308;
-    color: #0f1115;
-}
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(30, 64, 175, 0.4);
+        }
 
-.hr-zone-anaerobic {
-    background: #ef4444;
-    color: #ffffff;
-}
+        @media (prefers-color-scheme: dark) {
+            button:hover {
+                box-shadow: 0 6px 20px rgba(37, 99, 235, 0.5);
+            }
+        }
 
-/* RESPONSIVE */
-@media (max-width: 768px) {
-    h1 { font-size: 1.8rem; }
-    .section { padding: 20px; }
-    th, td { font-size: 13px; }
-}
+        button:active {
+            transform: translateY(0);
+        }
 
-@media (max-width: 600px) {
-    table { display: block; overflow-x: auto; }
-}
+        #vcrResult {
+            margin-top: 25px;
+            padding: 20px;
+            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+            border-radius: 12px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: 600;
+            color: #1e40af;
+            border: 2px solid #2563eb;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            animation: slideIn 0.5s ease-out;
+        }
 
+        @media (prefers-color-scheme: dark) {
+            #vcrResult {
+                background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+                color: #bfdbfe;
+                border: 2px solid #60a5fa;
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        #vcrResult span {
+            display: block;
+        }
+
+        @media (min-width: 601px) {
+            #vcrResult {
+                flex-direction: row;
+                justify-content: center;
+            }
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            table {
+                background: #0f172a;
+                box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            }
+        }
+
+        th, td {
+            padding: 12px 16px;
+            text-align: center;
+            font-size: 14px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            th, td {
+                border-bottom: 1px solid #374151;
+            }
+        }
+
+        th {
+            background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+            font-weight: 600;
+            color: #1f2937;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-size: 12px;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            th {
+                background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+                color: #f3f4f6;
+            }
+        }
+
+        td {
+            font-weight: 500;
+        }
+
+        tr:hover {
+            background: #f9fafb;
+            transition: background 0.3s ease;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            tr:hover {
+                background: #1e293b;
+            }
+        }
+
+        /* Training type colors - Sport Athletic theme */
+        .type-ext {
+            background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+            color: #b91c1c;
+            font-weight: 600;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .type-ext {
+                background: linear-gradient(135deg, #7f1d1d 0%, #991b1b 100%);
+                color: #fca5a5;
+            }
+        }
+
+        .type-fcr {
+            background: linear-gradient(135deg, #fed7aa 0%, #fdba74 100%);
+            color: #c2410c;
+            font-weight: 600;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .type-fcr {
+                background: linear-gradient(135deg, #7c2d12 0%, #9a3412 100%);
+                color: #fdba74;
+            }
+        }
+
+        .type-mcr-scr {
+            background: linear-gradient(135deg, #fef08a 0%, #fde047 100%);
+            color: #a16207;
+            font-weight: 600;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .type-mcr-scr {
+                background: linear-gradient(135deg, #713f12 0%, #854d0e 100%);
+                color: #fde047;
+            }
+        }
+
+        .type-arr {
+            background: linear-gradient(135deg, #bbf7d0 0%, #86efac 100%);
+            color: #15803d;
+            font-weight: 600;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .type-arr {
+                background: linear-gradient(135deg, #14532d 0%, #166534 100%);
+                color: #86efac;
+            }
+        }
+
+        .estimated-pace-table th {
+            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+            color: #1e40af;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .estimated-pace-table th {
+                background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+                color: #bfdbfe;
+            }
+        }
+
+        .estimated-pace-table td {
+            background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .estimated-pace-table td {
+                background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            }
+        }
+
+        /* Heart Rate Zones - Sport Athletic */
+        .hr-zone-recovery {
+            background: linear-gradient(135deg, #bbf7d0 0%, #86efac 100%);
+            color: #15803d;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .hr-zone-recovery {
+                background: linear-gradient(135deg, #14532d 0%, #166534 100%);
+                color: #86efac;
+            }
+        }
+
+        .hr-zone-aerobic {
+            background: linear-gradient(135deg, #fed7aa 0%, #fdba74 100%);
+            color: #c2410c;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .hr-zone-aerobic {
+                background: linear-gradient(135deg, #7c2d12 0%, #9a3412 100%);
+                color: #fdba74;
+            }
+        }
+
+        .hr-zone-anaerobic {
+            background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+            color: #b91c1c;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .hr-zone-anaerobic {
+                background: linear-gradient(135deg, #7f1d1d 0%, #991b1b 100%);
+                color: #fca5a5;
+            }
+        }
+
+        /* Icons */
+        .icon {
+            font-size: 1.2rem;
+            margin-right: 5px;
+        }
+
+        /* Loading animation */
+        .calculating {
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        .calculating button {
+            background: #64748b;
+            cursor: not-allowed;
+        }
+
+        /* Tooltip styles */
+        .tooltip {
+            position: relative;
+            display: inline-block;
+        }
+
+        .tooltip:hover::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1e293b;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            white-space: nowrap;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .tooltip:hover::after {
+                background: #0f172a;
+                border: 1px solid #60a5fa;
+            }
+        }
+
+        /* Pulse animation for results */
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        /* --- RESPONSIVE DESIGN --- */
+        
+        /* For tablets and smaller devices */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px 0;
+            }
+
+            .container {
+                padding: 0 15px;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+                margin-bottom: 20px;
+            }
+
+            h2 {
+                font-size: 1.3rem;
+            }
+            
+            .section {
+                padding: 20px;
+                margin-bottom: 20px;
+            }
+            
+            .form-row {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 15px;
+            }
+            
+            .form-row .form-group {
+                margin-bottom: 0;
+            }
+
+            label {
+                font-size: 0.85rem;
+            }
+
+            input, button {
+                font-size: 1rem;
+                padding: 12px 14px;
+            }
+            
+            th, td {
+                padding: 10px 8px;
+            }
+
+            #vcrResult {
+                flex-direction: column;
+                font-size: 1rem;
+                padding: 15px;
+                gap: 8px;
+            }
+        }
+
+        /* For very small screens to ensure tables are scrollable */
+        @media (max-width: 600px) {
+            table {
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+        }
 
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>🏃‍♂️ VCR Calculator & Training Pace Guide</h1>
+        <h1>🏃‍♂️ VCR & Training Pace </h1>
 
         <div class="section">
             <h2><span class="icon">⏱️</span>30 Min Time Trial </h2>
@@ -233,22 +562,21 @@ tr:hover {
                 </div>
             </div>
             <button onclick="calculateVCRAndPace()">🚀 Calculate VCR & Training Paces</button>
-
-            <div id="vcrResult" aria-live="polite">
-    <div id="vcrValue" class="vcr-text"></div>
-    <div id="vcrPaceValue" class="vcr-text"></div>
+            <div id="vcrResult" style="display: none;" aria-live="polite">
+                <span id="vcrValue"></span>
+                <span id="vcrPaceValue"></span>
             </div>
         </div>
 
         <div class="section" id="estimatePaceChartSection" style="display: none;">
-            <h2><span class="icon">🏆</span>Estimated Race Pace Chart</h2>
+            <h2><span class="icon">🏆</span>Estimated Race Pace </h2>
             <table class="estimated-pace-table">
                 <thead>
                     <tr>
                         <th>🏃‍♂️ Distance</th>
                         <th>💪%VCR</th>
                         <th>⏱️ Pace</th>
-                        <th>🎯 Estimated Time (H:M:S)</th>
+                        <th>🎯 Estimated Time</th>
                     </tr>
                 </thead>
                 <tbody>
