@@ -337,7 +337,7 @@
         @media (prefers-color-scheme: dark) {
             .type-mcr-scr {
                 background: linear-gradient(135deg, #713f12 0%, #854d0e 100%);
-                color: #fde047;
+                color: #fde047; 
             }
         }
 
@@ -396,8 +396,8 @@
 
         @media (prefers-color-scheme: dark) {
             .hr-zone-aerobic {
-                background: linear-gradient(135deg, #7c2d12 0%, #9a3412 100%);
-                color: #fdba74;
+                background: linear-gradient(135deg, #7c2d12 0%, #a16207 100%);
+                color: #fdba74; 
             }
         }
 
@@ -543,7 +543,7 @@
         <h1>🏃‍♂️ VCR & Training Paces </h1>
 
         <div class="section">
-            <h2><span class="icon">⏱️</span>30 Min Time Trial </h2>
+            <h2><span class="icon">⏱️</span>30-Min Time Trial </h2>
             <div class="form-group">
                 <label for="distance">Distance (meters):</label>
                 <input type="number" id="distance" placeholder="Enter distance covered in 30 minutes" min="0">
@@ -621,7 +621,7 @@
                 </thead>
                 <tbody id="paceTableBody">
                     <tr>
-                        <td rowspan="2" class="type-ext">EXT</td>
+                        <td rowspan="2" class="type-ext">Anaerobic</td>
                         <td>110%</td>
                         <td id="ext_110_pace"></td>
                         <td>400m intervals</td>
@@ -632,19 +632,19 @@
                         <td>1000m intervals</td>
                     </tr>
                     <tr>
-                        <td class="type-fcr">FCR</td>
+                        <td class="type-fcr">Sub-LT</td>
                         <td>97%</td>
                         <td id="fcr_97_pace"></td>
                         <td>30 minutes</td>
                     </tr>
                     <tr>
-                        <td class="type-mcr-scr">MCR</td>
+                        <td class="type-mcr-scr">Steady</td>
                         <td>90%</td>
                         <td id="mcr_90_pace"></td>
                         <td>45-60 minutes</td>
                     </tr>
                     <tr>
-                        <td rowspan="3" class="type-mcr-scr">SCR</td>
+                        <td rowspan="3" class="type-mcr-scr">Aerobic - LT1</td>
                         <td>85%</td>
                         <td id="scr_85_pace_1"></td>
                         <td rowspan="3">60-90 minutes</td>
@@ -654,11 +654,11 @@
                         <td id="scr_80_pace_2"></td>
                     </tr>
                     <tr>
-                        <td>75%</td>
+	       <td>75%</td>
                         <td id="scr_75_pace_3"></td>
                     </tr>
 	  <tr>
-                        <td class="type-arr">ARR</td>
+                        <td class="type-arr">Recovery</td>
                         <td>70%</td>
                         <td id="arr_70_pace"></td>
                         <td>30 minutes</td>
@@ -684,17 +684,17 @@
                 <tbody id="trainingDistanceBody">
                     <tr>
                         <td><strong>5-10%</strong></td>
-                        <td class="type-ext">EXT / FCR</td>
+                        <td class="type-ext">Anaerobic</td>
                         <td id="mileage_5_10"></td>
                     </tr>
                     <tr>
                         <td><strong>60%</strong></td>
-                        <td class="type-mcr-scr">MCR / SCR</td>
+                        <td class="type-mcr-scr">Aerobic</td>
                         <td id="mileage_60"></td>
                     </tr>
                     <tr>
                         <td><strong>20-30%</strong></td>
-                        <td class="type-arr">ARR</td>
+                        <td class="type-arr">Recovery</td>
                         <td id="mileage_20_30"></td>
                     </tr>
                 </tbody>
@@ -727,20 +727,21 @@
                     </tr>
                 </thead>
                 <tbody id="hrZonesBody">
-                    <tr>
-                        <td class="hr-zone-recovery"><strong>Recovery Zone</strong></td>
-                        <td>Below 60%</td>
-                        <td id="hr_zone_1"></td>
+                      <tr>  
+                         <td class="hr-zone-anaerobic"><strong>Anaerobic</strong></td>
+                        <td>Above 80%</td>
+                        <td id="hr_zone_3"></td>
                     </tr>
                     <tr>
-                        <td class="hr-zone-aerobic"><strong>Aerobic Zone</strong></td>
+                        <td class="hr-zone-aerobic"><strong>Aerobic</strong></td>
                         <td>60-80%</td>
                         <td id="hr_zone_2"></td>
                     </tr>
+                     <tr>
+                        <td class="hr-zone-recovery"><strong>Recovery</strong></td>
+                        <td>Below 60%</td>
+                        <td id="hr_zone_1"></td>
                     <tr>
-                        <td class="hr-zone-anaerobic"><strong>Anaerobic Zone</strong></td>
-                        <td>Above 80%</td>
-                        <td id="hr_zone_3"></td>
                     </tr>
                 </tbody>
             </table>
@@ -822,8 +823,8 @@
 
                 const formattedVcrPace = formatPace(vcrPaceSecondsPerKm);
 
-                document.getElementById("vcrValue").innerHTML = `✅ Your VCR is: <strong>${vcr} m/s</strong>`;
-                document.getElementById("vcrPaceValue").innerHTML = `⏱️ VCR Pace: <strong>${formattedVcrPace} min/km</strong>`;
+                document.getElementById("vcrValue").innerHTML = `✅ VCR : <strong>${vcr} m/s</strong>`;
+                document.getElementById("vcrPaceValue").innerHTML = `⏱️ LT Pace : <strong>${formattedVcrPace} min/km</strong>`;
                 
                 const result = document.getElementById("vcrResult");
                 result.style.display = 'flex';
@@ -1036,4 +1037,3 @@
     </script>
 </body>
 </html>
-
